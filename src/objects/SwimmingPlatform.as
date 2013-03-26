@@ -4,7 +4,6 @@ package objects
 	import Box2D.Common.Math.b2Vec2;
 	import Box2D.Dynamics.b2Body;
 	import Box2D.Dynamics.b2BodyDef;
-	import Box2D.Dynamics.b2Fixture;
 	import Box2D.Dynamics.b2FixtureDef;
 	import Box2D.Dynamics.Controllers.b2BuoyancyController;
 	
@@ -23,9 +22,7 @@ package objects
 	{
 		public var ws:int = 30;
 		
-		private var pool:b2Body;
-		private var poolFixtureDef:b2FixtureDef;
-		private var poolFixture:b2Fixture;
+		private var platformFixtureDef:b2FixtureDef;
 		
 		public var display:CitrusSprite;
 		public var texture:Texture;
@@ -79,8 +76,6 @@ package objects
 		{
 			_body = _box2D.world.CreateBody(_bodyDef);
 			_body.SetUserData(this);
-			pool = _box2D.world.CreateBody(_bodyDef);
-			pool.SetUserData(this);
 		}
 		
 		override protected function createShape():void
@@ -102,33 +97,33 @@ package objects
 		{
 			_fixture = _body.CreateFixture(_fixtureDef);
 			
-			poolFixtureDef = new b2FixtureDef();
-			poolFixtureDef.friction = 0.3;
-			poolFixtureDef.restitution = 0;
+			platformFixtureDef = new b2FixtureDef();
+			platformFixtureDef.friction = 0.3;
+			platformFixtureDef.restitution = 0;
 			
 			_shape = new b2PolygonShape();
 			b2PolygonShape(_shape).SetAsOrientedBox(40/ws, 5/ws, new b2Vec2(-width/ws/2+30/ws, 35/ws), deg2rad(60));
-			poolFixtureDef.density = 0.3;
-			poolFixtureDef.shape = _shape;
-			_body.CreateFixture(poolFixtureDef);	
+			platformFixtureDef.density = 0.3;
+			platformFixtureDef.shape = _shape;
+			_body.CreateFixture(platformFixtureDef);	
 			
 			_shape = new b2PolygonShape();
 			b2PolygonShape(_shape).SetAsOrientedBox(40/ws, 5/ws, new b2Vec2(width/ws/2-30/ws, 35/ws), deg2rad(-60));
-			poolFixtureDef.shape = _shape;
-			poolFixtureDef.density = 0.3;
-			_body.CreateFixture(poolFixtureDef);
+			platformFixtureDef.shape = _shape;
+			platformFixtureDef.density = 0.3;
+			_body.CreateFixture(platformFixtureDef);
 			
 			_shape = new b2PolygonShape();
 			b2PolygonShape(_shape).SetAsOrientedBox(65/ws, 5/ws, new b2Vec2(0, 33/ws));
-			poolFixtureDef.shape = _shape;
-			poolFixtureDef.density = 0.3;
-			_body.CreateFixture(poolFixtureDef);		
+			platformFixtureDef.shape = _shape;
+			platformFixtureDef.density = 0.3;
+			_body.CreateFixture(platformFixtureDef);		
 			
 			_shape = new b2PolygonShape();
 			b2PolygonShape(_shape).SetAsOrientedBox(16.5/ws, 16.5/ws, new b2Vec2(0, 63.5/ws));
-			poolFixtureDef.shape = _shape;
-			poolFixtureDef.density = 2.9;
-			_body.CreateFixture(poolFixtureDef);	
+			platformFixtureDef.shape = _shape;
+			platformFixtureDef.density = 2.9;
+			_body.CreateFixture(platformFixtureDef);	
 			
 			setDisplay();
 		}
