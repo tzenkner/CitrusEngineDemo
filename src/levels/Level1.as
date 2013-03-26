@@ -195,6 +195,7 @@ package levels {
 			snowman.playAnimation("showHut");
 		}
 		
+		// function i use for tweening the camera
 		private function zoomIn(contact:b2Contact, sprite:Sprite):void {
 			
 			if (contact.GetFixtureA().GetBody().GetUserData() is HeroSnowman || contact.GetFixtureB().GetBody().GetUserData() is HeroSnowman) {

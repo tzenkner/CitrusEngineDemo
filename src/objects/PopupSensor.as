@@ -10,22 +10,8 @@ package objects {
 	import starling.display.Sprite;
 	import starling.text.TextField;
 	
-	/**
-	 * Sensors simply listen for when an object begins and ends contact with them. They dispatch a signal
-	 * when contact is made or ended, and this signal can be used to perform custom game logic such as
-	 * triggering a scripted event, ending a level, popping up a dialog box, and virtually anything else.
-	 * 
-	 * <p>Remember that signals dispatch events when ANY Box2D object collides with them, so you will want
-	 * your collision handler to ignore collisions with objects that it is not interested in, or extend
-	 * the sensor and use maskBits to ignore collisions altogether.</p>  
-	 * 
-	 * <ul>Events:
-	 * <li>onBeginContact : Dispatches on first contact with the sensor.</li>
-	 * <li>onEndContact : Dispatches when the object leaves the sensor.</li></ul>
-	 */	
 	public class PopupSensor extends Box2DPhysicsObject
 	{
-		
 		public var onBeginContact:Signal;
 		public var onEndContact:Signal;
 		

@@ -56,7 +56,7 @@ package levels{
 	public class SnowmanBasicLevel extends StarlingState {
 		
 		[Embed(source = "/../embeds/skeleton.xml",mimeType = "application/octet-stream")]
-		private const _ResourcesData:Class;
+		private const SkeletonDataXML:Class;
 		
 		protected var _factory:StarlingFactory;
 		protected var _armature:Armature;
@@ -125,7 +125,8 @@ package levels{
 			lifebar.name = "lifebar";
 			addChild(lifebar);
 			
-			skeletonData = XMLDataParser.parseSkeletonData(XML(new _ResourcesData()));
+			// the skeleton data for DragonBones, the body parts are included in my level spritesheet
+			skeletonData = XMLDataParser.parseSkeletonData(XML(new SkeletonDataXML()));
 			_factory = new StarlingFactory();
 			_factory.addSkeletonData(skeletonData);
 			_factory.addTextureAtlas(Assets.getAtlas(), "snowman2small");
@@ -136,6 +137,8 @@ package levels{
 		private function createHero():void
 		{
 			_armature = _factory.buildArmature("snowman");
+			
+			// the arm animation is altered for weapon change, so i assign a variable to it
 			arm = _armature.getBone("frontDownArm").childArmature.animation;
 			arm.gotoAndPlay("gun");
 			(_armature.display as Sprite).scaleY = 0.35;
@@ -333,6 +336,7 @@ package levels{
 			}
 		}
 		
+		// functions are used for the PopupSensor, maybe they should be moved there
 		protected function createTextField(text:String, x:Number, y:Number):Sprite
 		{
 			var sprite:Sprite = new Sprite();

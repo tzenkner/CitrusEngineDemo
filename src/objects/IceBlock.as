@@ -2,29 +2,24 @@ package objects
 {
 	import com.greensock.TweenLite;
 	
-	import flash.display.BitmapData;
-	
 	import Box2D.Collision.Shapes.b2PolygonShape;
-	import Box2D.Common.Math.b2Vec2;
 	import Box2D.Dynamics.b2Body;
 	import Box2D.Dynamics.b2BodyDef;
 	import Box2D.Dynamics.b2FilterData;
 	import Box2D.Dynamics.b2FixtureDef;
-	import Box2D.Dynamics.Contacts.b2Contact;
 	
 	import citrus.objects.Box2DPhysicsObject;
 	import citrus.objects.CitrusSprite;
 	import citrus.physics.PhysicsCollisionCategories;
 	
+	import objects.customized.Pool;
+	
 	import starling.display.Image;
 	import starling.extensions.particles.PDParticleSystem;
-	import starling.textures.Texture;
 	import starling.utils.rad2deg;
-	import objects.customized.Pool;
 	
 	public class IceBlock extends Box2DPhysicsObject
 	{
-		
 		private var ws:int = 30;
 		
 		private var images:Vector.<CitrusSprite>;
@@ -92,6 +87,7 @@ package objects
 			_fixtureDef.userData = {index:0};
 		}
 		
+		// setting up the blocks, could be shortened ;)
 		override protected function createFixture():void
 		{
 			images=new Vector.<CitrusSprite>();
@@ -308,13 +304,6 @@ package objects
 		private function onFinishTween(index:int):void {
 			_box2D.world.DestroyBody(bodies[index]);
 			_ce.state.remove(images[index]);
-		}
-		
-		override public function handleBeginContact(contact:b2Contact):void
-		{
-		}
-		override public function handleEndContact(contact:b2Contact):void
-		{
 		}
 	}
 }

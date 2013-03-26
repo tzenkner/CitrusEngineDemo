@@ -1,9 +1,5 @@
 package objects{
 	
-	import flash.display.BitmapData;
-	import flash.display.Shape;
-	import flash.geom.Matrix;
-	
 	import Box2D.Collision.Shapes.b2CircleShape;
 	import Box2D.Common.Math.b2Vec2;
 	import Box2D.Dynamics.b2Body;
@@ -15,12 +11,11 @@ package objects{
 	import citrus.objects.CitrusSprite;
 	import citrus.objects.platformer.box2d.Coin;
 	import citrus.objects.platformer.box2d.Sensor;
-	import citrus.physics.PhysicsCollisionCategories;
 	import citrus.physics.box2d.Box2DUtils;
 	
 	import starling.display.Image;
-	import starling.textures.Texture;
 	
+	// this are my bodies created for shooting
 	public class Bullet extends Box2DPhysicsObject
 	{
 		public var speed:b2Vec2 = new b2Vec2(30, 0);
@@ -78,16 +73,6 @@ package objects{
 		override protected function createFixture():void
 		{
 			_fixture = _body.CreateFixture(_fixtureDef);
-			
-			var circleShape:Shape = new Shape();
-			circleShape.graphics.beginFill(0xff0000, 1);
-			circleShape.graphics.drawCircle(2, 2, 2);
-			circleShape.graphics.endFill();
-			var m:Matrix = new Matrix();
-			m.translate(2, 2);
-			var circleData:BitmapData = new BitmapData(5, 5, true, 0x00000000);
-			circleData.draw(circleShape);
-			var texture:Texture = Texture.fromBitmapData(circleData);
 			
 			image = new CitrusSprite("b", {x:_body.GetPosition().x * ws, y:_body.GetPosition().y * ws,group:3,
 				view:new Image(Assets.getAtlas().getTexture("shoot")), registration:"center"});

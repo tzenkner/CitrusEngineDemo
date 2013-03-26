@@ -113,7 +113,6 @@ package objects.customized
 			}
 			
 			buoyancyController.normal.Set(0,-1);
-			//			buoyancyController.offset=-670/ws;
 			buoyancyController.offset=-(_bodyDef.position.y - 2*waterHeight/ws + poolThickness/ws);
 			buoyancyController.useDensity=true;
 			buoyancyController.density=1.8;
@@ -122,6 +121,7 @@ package objects.customized
 			_box2D.world.AddController(buoyancyController);
 		}
 		
+		// if objects have there initial position inside a pool you have to add them manually
 		public function addBodyToPool(b:b2Body):void
 		{
 			buoyancyController.AddBody(b);
@@ -129,8 +129,6 @@ package objects.customized
 		
 		override public function handleBeginContact(contact:b2Contact):void
 		{
-//			if(contact && contact.GetFixtureB().GetUserData() && contact.GetFixtureB().GetUserData().name == "water")
-//			{
 			if(contact.GetFixtureA() == _fixture || contact.GetFixtureB() == _fixture)
 			{
 				var bodyA:b2Body= Box2DUtils.CollisionGetOther(this, contact).body;
