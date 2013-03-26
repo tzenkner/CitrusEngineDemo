@@ -33,6 +33,9 @@ package levels {
 	import starling.display.Sprite;
 	import starling.text.TextField;
 	
+	/**
+	 * @author Thomas Zenkner
+	 */
 	public class Level1 extends SnowmanBasicLevel 
 	{
 		private var vecCoins:Vector.<CitrusObject>;

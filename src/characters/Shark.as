@@ -20,6 +20,7 @@ package characters
 	import objects.SwimmingPlatform;
 	import objects.customized.Pool;
 	
+	
 	public class Shark extends Enemy
 	{
 		protected var _topSensorShape:b2PolygonShape;

@@ -53,6 +53,9 @@ package levels{
 	import starling.utils.deg2rad;
 	import starling.utils.rad2deg;
 	
+	/**
+	 * @author Thomas Zenkner
+	 */
 	public class SnowmanBasicLevel extends StarlingState {
 		
 		[Embed(source = "/../embeds/skeleton.xml",mimeType = "application/octet-stream")]

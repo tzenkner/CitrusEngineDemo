@@ -8,6 +8,9 @@ package effects
 	import starling.extensions.particles.PDParticleSystem;
 	import starling.textures.Texture;
 	
+	/**
+	 * @author Thomas Zenkner
+	 */
 	public class Particles
 	{
 		[Embed(source="/../embeds/particleSnow.pex", mimeType="application/octet-stream")]

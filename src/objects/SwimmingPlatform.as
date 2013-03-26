@@ -16,6 +16,9 @@ package objects
 	import starling.utils.deg2rad;
 	import starling.utils.rad2deg;
 	
+	/**
+	 * @author Thomas Zenkner
+	 */
 	public class SwimmingPlatform extends Box2DPhysicsObject
 	{
 		public var ws:int = 30;

@@ -18,6 +18,9 @@ package objects
 	import starling.extensions.particles.PDParticleSystem;
 	import starling.utils.rad2deg;
 	
+	/**
+	 * @author Thomas Zenkner
+	 */
 	public class IceBlock extends Box2DPhysicsObject
 	{
 		private var ws:int = 30;
