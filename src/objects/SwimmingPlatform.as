@@ -97,33 +97,29 @@ package objects
 		{
 			_fixture = _body.CreateFixture(_fixtureDef);
 			
-			platformFixtureDef = new b2FixtureDef();
-			platformFixtureDef.friction = 0.3;
-			platformFixtureDef.restitution = 0;
-			
 			_shape = new b2PolygonShape();
 			b2PolygonShape(_shape).SetAsOrientedBox(40/ws, 5/ws, new b2Vec2(-width/ws/2+30/ws, 35/ws), deg2rad(60));
-			platformFixtureDef.density = 0.3;
-			platformFixtureDef.shape = _shape;
-			_body.CreateFixture(platformFixtureDef);	
+			_fixtureDef.density = 0.3;
+			_fixtureDef.shape = _shape;
+			_body.CreateFixture(_fixtureDef);	
 			
 			_shape = new b2PolygonShape();
 			b2PolygonShape(_shape).SetAsOrientedBox(40/ws, 5/ws, new b2Vec2(width/ws/2-30/ws, 35/ws), deg2rad(-60));
-			platformFixtureDef.shape = _shape;
-			platformFixtureDef.density = 0.3;
-			_body.CreateFixture(platformFixtureDef);
+			_fixtureDef.shape = _shape;
+			_fixtureDef.density = 0.3;
+			_body.CreateFixture(_fixtureDef);
 			
 			_shape = new b2PolygonShape();
 			b2PolygonShape(_shape).SetAsOrientedBox(65/ws, 5/ws, new b2Vec2(0, 33/ws));
-			platformFixtureDef.shape = _shape;
-			platformFixtureDef.density = 0.3;
-			_body.CreateFixture(platformFixtureDef);		
+			_fixtureDef.shape = _shape;
+			_fixtureDef.density = 0.3;
+			_body.CreateFixture(_fixtureDef);		
 			
 			_shape = new b2PolygonShape();
 			b2PolygonShape(_shape).SetAsOrientedBox(16.5/ws, 16.5/ws, new b2Vec2(0, 63.5/ws));
-			platformFixtureDef.shape = _shape;
-			platformFixtureDef.density = 2.9;
-			_body.CreateFixture(platformFixtureDef);	
+			_fixtureDef.shape = _shape;
+			_fixtureDef.density = 2.9;
+			_body.CreateFixture(_fixtureDef);	
 			
 			setDisplay();
 		}

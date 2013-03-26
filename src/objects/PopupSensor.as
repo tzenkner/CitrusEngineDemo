@@ -3,11 +3,17 @@ package objects {
 	import Box2D.Dynamics.b2Body;
 	import Box2D.Dynamics.Contacts.b2Contact;
 	
+	import characters.HeroSnowman;
+	
 	import citrus.objects.Box2DPhysicsObject;
+	import citrus.objects.CitrusSprite;
+	import citrus.physics.box2d.Box2DUtils;
 	
 	import org.osflash.signals.Signal;
 	
+	import starling.display.Quad;
 	import starling.display.Sprite;
+	import starling.text.BitmapFont;
 	import starling.text.TextField;
 	
 	public class PopupSensor extends Box2DPhysicsObject
@@ -49,13 +55,49 @@ package objects {
 			_fixtureDef.isSensor = true;
 		}
 		
-		override public function handleBeginContact(contact:b2Contact):void {
-			onBeginContact.dispatch(contact, sprite);
+		override public function handleBeginContact(contact:b2Contact):void 
+		{
+			onBeginContact.dispatch(contact);
+			
+			if (Box2DUtils.CollisionGetOther(this, contact) is HeroSnowman)
+				showPopUp();
 		}
 		
-		override public function handleEndContact(contact:b2Contact):void {
+		override public function handleEndContact(contact:b2Contact):void 
+		{
+			onEndContact.dispatch(contact);
+			
 			if (oneTime) _ce.state.remove(this);
-			onEndContact.dispatch(contact, sprite);
+			
+			if (Box2DUtils.CollisionGetOther(this, contact) is HeroSnowman)
+				hidePopUp();
+		}
+		
+		public function createTextField(text:String, x:Number, y:Number):Sprite
+		{
+			sprite = new Sprite()
+			sprite.addChild(new Quad(200, 100,0x555555));
+			sprite.visible = false;
+			tf = new TextField(200, 100, text, "ArialMT");
+			tf.fontSize = BitmapFont.NATIVE_SIZE;
+			tf.color = 0xffffff;
+			tf.autoScale = true;
+			sprite.addChild(tf);
+			var ts:CitrusSprite = new CitrusSprite("ts", {x:x-100, y:y-150, group:6, view:sprite});
+			tf.fontSize = 12;
+			_ce.state.add(ts);
+			tf.visible = true;
+			return sprite;
+		}
+		
+		private function showPopUp():void 
+		{
+				sprite.visible = true;
+		}
+		
+		private function hidePopUp():void 
+		{
+				sprite.visible = false;
 		}
 	}
 }

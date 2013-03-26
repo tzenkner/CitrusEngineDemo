@@ -12,7 +12,6 @@ package levels{
 	
 	import Box2D.Common.Math.b2Vec2;
 	import Box2D.Dynamics.b2FilterData;
-	import Box2D.Dynamics.Contacts.b2Contact;
 	
 	import characters.HeroSnowman;
 	
@@ -46,10 +45,7 @@ package levels{
 	
 	import org.osflash.signals.Signal;
 	
-	import starling.display.Quad;
 	import starling.display.Sprite;
-	import starling.text.BitmapFont;
-	import starling.text.TextField;
 	import starling.utils.deg2rad;
 	import starling.utils.rad2deg;
 	
@@ -147,7 +143,7 @@ package levels{
 			(_armature.display as Sprite).scaleY = 0.35;
 			(_armature.display as Sprite).scaleX = 0.35;
 			
-			snowman = new HeroSnowman("snowman", {group:3, x:1000, y: 120, width:(_armature.display as Sprite).width/2+5, height:(_armature.display as Sprite).height/2+20, 
+			snowman = new HeroSnowman("snowman", {group:3, x:2700, y: 120, width:(_armature.display as Sprite).width/2+5, height:(_armature.display as Sprite).height/2+20, 
 				offsetX:0,	offsetY:0, view:_armature, registration:"topLeft"});
 			snowman.maxVelocity = 3.5;
 			snowman.jumpAcceleration = 0.2;
@@ -336,38 +332,6 @@ package levels{
 			{
 				stopShooting();
 				startShooting();
-			}
-		}
-		
-		// functions are used for the PopupSensor, maybe they should be moved there
-		protected function createTextField(text:String, x:Number, y:Number):Sprite
-		{
-			var sprite:Sprite = new Sprite();
-			sprite.addChild(new Quad(200, 100,0x555555));
-			sprite.visible = false;
-			var tf:TextField = new TextField(200, 100, text, "ArialMT");
-			tf.fontSize = BitmapFont.NATIVE_SIZE;
-			tf.color = 0xffffff;
-			tf.autoScale = true;
-			sprite.addChild(tf);
-			var ts:CitrusSprite = new CitrusSprite("ts", {x:x-100, y:y-150, group:6, view:sprite});
-			tf.fontSize = 12;
-			add(ts);
-			tf.visible = true;
-			return sprite;
-		}
-		
-		protected function showPopUp(contact:b2Contact, sprite:Sprite):void {
-			
-			if (contact.GetFixtureA().GetBody().GetUserData() is HeroSnowman || contact.GetFixtureB().GetBody().GetUserData() is HeroSnowman) {
-				sprite.visible = true;
-			}
-		}
-		
-		protected function hidePopUp(contact:b2Contact, sprite:Sprite):void {
-			
-			if (contact.GetFixtureA().GetBody().GetUserData() is HeroSnowman || contact.GetFixtureB().GetBody().GetUserData() is HeroSnowman) {
-				sprite.visible = false;
 			}
 		}
 	}

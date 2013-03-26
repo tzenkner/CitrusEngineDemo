@@ -44,15 +44,6 @@ package effects
 		public function Particles()
 		{
 			ce = CitrusEngine.getInstance();
-			
-			particlesSnow = new PDParticleSystem(XML(new ParticleSnowXML()), Assets.getAtlas().getTexture("textureSnow"));
-			particlesSnow.emitterX = 2048;
-			particlesSnow.emitterY = -1424;
-			Starling.juggler.add(particlesSnow);
-			particlesSnow.start();
-			snow = new CitrusSprite("snow", {group:7, view:particlesSnow});
-			(ce as StarlingCitrusEngine).state.add(snow);
-			
 			var texture:Texture =  Assets.getAtlas().getTexture("textureFire");
 			
 			particlesSmoke = new PDParticleSystem(XML(new ParticleSmokeXML()), texture);
@@ -75,6 +66,14 @@ package effects
 			(ce as StarlingCitrusEngine).starling.juggler.add(particlesBubble);
 			bubbles = new CitrusSprite("bubbles", {group:7, view:particlesBubble});
 			(ce as StarlingCitrusEngine).state.add(bubbles);
+			
+			particlesSnow = new PDParticleSystem(XML(new ParticleSnowXML()), Assets.getAtlas().getTexture("textureSnow"));
+			particlesSnow.emitterX = 2048;
+			particlesSnow.emitterY = -1424;
+			(ce as StarlingCitrusEngine).starling.juggler.add(particlesSnow);
+			particlesSnow.start();
+			snow = new CitrusSprite("snow", {group:7, view:particlesSnow});
+			(ce as StarlingCitrusEngine).state.add(snow);
 		}
 	}
 }

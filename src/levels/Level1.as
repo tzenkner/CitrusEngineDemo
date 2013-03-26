@@ -143,59 +143,35 @@ package levels {
 			}
 			
 			var moveHint:PopupSensor = PopupSensor(getObjectByName("moveHint"));
-			moveHint.sprite = createTextField("What's going on? It's damn cold\n out here!\nControl me with the arrow keys, press space to jump!", moveHint.x, moveHint.y);
-			moveHint.onBeginContact.add(showPopUp);
-			moveHint.onEndContact.add(hidePopUp);
+			moveHint.createTextField("What's going on? It's damn cold\n out here!\nControl me with the arrow keys, press space to jump!", moveHint.x, moveHint.y);
 			
 			var startHint:PopupSensor = PopupSensor(getObjectByName("startHint"));
-			startHint.sprite = createTextField("How did I become a snowman?!\nStrange s***!", startHint.x, startHint.y);
-			startHint.onBeginContact.add(showPopUp);
-			startHint.onEndContact.add(hidePopUp);
+			startHint.createTextField("How did I become a snowman?!\nStrange s***!", startHint.x, startHint.y);
 			
 			var storyHint:PopupSensor = PopupSensor(getObjectByName("storyHint"));
-			storyHint.sprite = createTextField("Oooh I have weapons?!\nHope I don't need to kill someone...", storyHint.x, storyHint.y);
-			storyHint.onBeginContact.add(showPopUp);
-			storyHint.onEndContact.add(hidePopUp);
+			storyHint.createTextField("Oooh I have weapons?!\nHope I don't need to kill someone...", storyHint.x, storyHint.y);
 			
 			var firingHint:PopupSensor = PopupSensor(getObjectByName("firingHint"));
-			firingHint.sprite = createTextField("Press Ctrl or Y to enter aiming mode\nUp/Down to change angle,\n Ctrl or Y to fire\nX changes the weapon", firingHint.x, firingHint.y);
-			firingHint.onBeginContact.add(showPopUp);
-			firingHint.onEndContact.add(hidePopUp);
+			firingHint.createTextField("Press Ctrl or Y to enter aiming mode\nUp/Down to change angle,\n Ctrl or Y to fire\nX changes the weapon", firingHint.x, firingHint.y);
 			
 			var ropeHint:PopupSensor = PopupSensor(getObjectByName("ropeHint"));
-			ropeHint.sprite = createTextField("Jump against a rope and hang to it\nLeft/Right to swing\nUp/Down to climb\nSpace to get off", ropeHint.x, ropeHint.y);
-			ropeHint.onBeginContact.add(showPopUp);
-			ropeHint.onEndContact.add(hidePopUp);
+			ropeHint.createTextField("Jump against a rope and hang to it\nLeft/Right to swing\nUp/Down to climb\nSpace to get off", ropeHint.x, ropeHint.y);
 			
 			var slideHint:PopupSensor = PopupSensor(getObjectByName("slideHint"));
-			slideHint.sprite = createTextField("I am my own sledge!\nDuck (key down) while walking\nand slide. Try it downwards!", slideHint.x, slideHint.y);
-			slideHint.onBeginContact.add(showPopUp);
-			slideHint.onEndContact.add(hidePopUp);
+			slideHint.createTextField("I am my own sledge!\nDuck (key down) while walking\nand slide. Try it downwards!", slideHint.x, slideHint.y);
 			
 			var swimmingHint:PopupSensor = PopupSensor(getObjectByName("swimmingHint"));
-			swimmingHint.sprite = createTextField("If under water press Space to move up.\nAnd don't touch the fish\nor dive too deep!\nI'm not made for hot water!", swimmingHint.x+100, swimmingHint.y);
-			swimmingHint.onBeginContact.add(showPopUp);
-			swimmingHint.onEndContact.add(hidePopUp);
+			swimmingHint.createTextField("If under water press Space to move up.\nAnd don't touch the fish\nor dive too deep!\nI'm not made for hot water!", swimmingHint.x+100, swimmingHint.y);
 			
 			var hotWaterHint:PopupSensor = PopupSensor(getObjectByName("hotWaterHint"));
 			hotWaterHint.oneTime = true;
-			hotWaterHint.sprite = createTextField("This water looks hot, better not jump in there!\n Maybe I can cool it down..", hotWaterHint.x, hotWaterHint.y);
-			hotWaterHint.onBeginContact.add(showPopUp);
+			hotWaterHint.createTextField("This water looks hot, better not jump in there!\n Maybe I can cool it down..", hotWaterHint.x, hotWaterHint.y);
 			hotWaterHint.onBeginContact.add(zoomIn);
-			hotWaterHint.onEndContact.add(hidePopUp);
 			
 			var endHint:PopupSensor = PopupSensor(getObjectByName("endHint"));
-			endHint.sprite = createTextField("", endHint.x, endHint.y);
-			endHint.onBeginContact.add(setEndText);
-			endHint.onBeginContact.add(showPopUp);
-			endHint.onEndContact.add(hidePopUp);
-		}
-		
-		private function setEndText(contact:b2Contact, sprite:Sprite):void 
-		{
-			(PopupSensor(getObjectByName("endHint")).sprite.getChildAt(1) as TextField).text = "Level End!\nYou have collected "
-				+_ce.gameData.coins+" out of "+vecCoins.length+" coins\nNext Level coming soon...";
-			snowman.playAnimation("showHut");
+			endHint.createTextField("", endHint.x, endHint.y);
+			endHint.onBeginContact.add(function():void{endHint.tf.text = "Level End!\nYou have collected "
+				+_ce.gameData.coins+" out of "+vecCoins.length+" coins\nNext Level coming soon..."});
 		}
 		
 		// function i use for tweening the camera
