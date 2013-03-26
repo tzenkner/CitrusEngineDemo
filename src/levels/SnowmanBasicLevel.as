@@ -143,7 +143,7 @@ package levels{
 			(_armature.display as Sprite).scaleY = 0.35;
 			(_armature.display as Sprite).scaleX = 0.35;
 			
-			snowman = new HeroSnowman("snowman", {group:3, x:2700, y: 120, width:(_armature.display as Sprite).width/2+5, height:(_armature.display as Sprite).height/2+20, 
+			snowman = new HeroSnowman("snowman", {group:3, x:1000, y: 120, width:(_armature.display as Sprite).width/2+5, height:(_armature.display as Sprite).height/2+20, 
 				offsetX:0,	offsetY:0, view:_armature, registration:"topLeft"});
 			snowman.maxVelocity = 3.5;
 			snowman.jumpAcceleration = 0.2;
