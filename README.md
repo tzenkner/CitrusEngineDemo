@@ -1,7 +1,7 @@
-CitrusEngineDemo
+Citrus Engine Sidescroller Demo
 ================
 
-Demo level for the CitrusEngine
+Demo level for the [Citrus Engine](http://citrusengine.com/)
 
 It uses Textureatlas, Dragonbones animation and the Starling particles extension
 
