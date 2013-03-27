@@ -6,7 +6,6 @@ package{
 
 	public class MyGameData extends AGameData {
 		
-		public var poolIceCount:int;
 		private var coinsCollected:int = 0;
 
 		public function MyGameData() {
