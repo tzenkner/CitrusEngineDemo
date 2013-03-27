@@ -175,7 +175,7 @@ package levels {
 		}
 		
 		// function i use for tweening the camera
-		private function zoomIn(contact:b2Contact, sprite:Sprite):void {
+		private function zoomIn(contact:b2Contact):void {
 			
 			if (contact.GetFixtureA().GetBody().GetUserData() is HeroSnowman || contact.GetFixtureB().GetBody().GetUserData() is HeroSnowman) {
 				var ob:Object = {x:snowman.x, y:snowman.y};
