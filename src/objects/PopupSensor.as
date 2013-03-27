@@ -73,7 +73,7 @@ package objects {
 				hidePopUp();
 		}
 		
-		public function createTextField(text:String, x:Number, y:Number):Sprite
+		public function createTextField(text:String, x:Number, y:Number):void
 		{
 			sprite = new Sprite()
 			sprite.addChild(new Quad(200, 100,0x555555));
@@ -87,7 +87,6 @@ package objects {
 			tf.fontSize = 12;
 			_ce.state.add(ts);
 			tf.visible = true;
-			return sprite;
 		}
 		
 		private function showPopUp():void 
