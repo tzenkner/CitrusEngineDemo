@@ -11,9 +11,7 @@ package{
 		public function MyGameData() {
 			
 			super();
-			
-			poolIceCount = 0
-			
+		
 			_levels = [[Level1, "../levels/A1/LevelOne.swf"]];
 		}
 		
