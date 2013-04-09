@@ -19,10 +19,7 @@ package objects{
 	public class Bullet extends Box2DPhysicsObject
 	{
 		public var speed:b2Vec2 = new b2Vec2(30, 0);
-		
 		private var ws:int = 30;	
-		
-		private var image:CitrusSprite;
 		
 		public function Bullet(name:String, params:Object=null)
 		{			
