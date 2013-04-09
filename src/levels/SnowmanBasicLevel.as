@@ -1,15 +1,5 @@
 package levels{
 	
-	import com.greensock.TweenLite;
-	
-	import flash.display.MovieClip;
-	import flash.events.Event;
-	import flash.events.TimerEvent;
-	import flash.geom.Point;
-	import flash.geom.Rectangle;
-	import flash.utils.Timer;
-	import flash.utils.setTimeout;
-	
 	import Box2D.Common.Math.b2Vec2;
 	import Box2D.Dynamics.b2FilterData;
 	
@@ -17,6 +7,7 @@ package levels{
 	
 	import citrus.core.CitrusEngine;
 	import citrus.core.starling.StarlingState;
+	import citrus.input.controllers.Keyboard;
 	import citrus.math.MathVector;
 	import citrus.objects.CitrusSprite;
 	import citrus.objects.complex.box2dstarling.Pool;
@@ -31,6 +22,8 @@ package levels{
 	import citrus.utils.objectmakers.ObjectMaker2D;
 	import citrus.view.starlingview.StarlingCamera;
 	
+	import com.greensock.TweenLite;
+	
 	import dragonBones.Armature;
 	import dragonBones.animation.Animation;
 	import dragonBones.events.AnimationEvent;
@@ -39,6 +32,14 @@ package levels{
 	import dragonBones.objects.XMLDataParser;
 	
 	import effects.Particles;
+	
+	import flash.display.MovieClip;
+	import flash.events.Event;
+	import flash.events.TimerEvent;
+	import flash.geom.Point;
+	import flash.geom.Rectangle;
+	import flash.utils.Timer;
+	import flash.utils.setTimeout;
 	
 	import objects.Bullet;
 	import objects.PopupSensor;
@@ -114,6 +115,11 @@ package levels{
 //						box2D.visible = true;
 			box2D.gravity.y = 10;
 			add(box2D);
+			
+			_ce.input.keyboard.addKeyAction("jump", Keyboard.SPACE);
+			_ce.input.keyboard.addKeyAction("shoot", Keyboard.Y);
+			_ce.input.keyboard.addKeyAction("shoot", Keyboard.CTRL);
+			_ce.input.keyboard.addKeyAction("changeWeapon", Keyboard.X);
 			
 			bulletTimer = new Timer(500);
 			bulletTimer.addEventListener(TimerEvent.TIMER, onBulletTimer);
@@ -268,7 +274,8 @@ package levels{
 			p = new Point(snowman.x + pre*32*0.35 + pre*Math.cos(_armature.getBone("frontUpArm").node.rotation) * 60 * 0.35, 
 				snowman.y -35*0.35 + Math.sin(_armature.getBone("frontUpArm").node.rotation) * 138 * 0.35);
 			
-			var bullet:Bullet = new Bullet("bullet", {x:p.x, y:p.y, speed:new b2Vec2(20 * pre*Math.cos(_armature.getBone("frontUpArm").node.rotation), 20 * Math.sin(_armature.getBone("frontUpArm").node.rotation))});
+			var bullet:Bullet = new Bullet("bullet", {x:p.x, y:p.y, view:Assets.getAtlas().getTexture("shoot"), group:3,
+				speed:new b2Vec2(20 * pre*Math.cos(_armature.getBone("frontUpArm").node.rotation), 20 * Math.sin(_armature.getBone("frontUpArm").node.rotation))});
 			add(bullet);
 		}
 		

@@ -21,7 +21,6 @@ package objects{
 		public var speed:b2Vec2 = new b2Vec2(30, 0);
 		
 		private var ws:int = 30;	
-		private var destroy:Boolean = false;
 		
 		private var image:CitrusSprite;
 		
@@ -35,24 +34,6 @@ package objects{
 		override public function update(timeDelta:Number):void
 		{
 			_body.SetLinearVelocity(speed);
-			if (image)
-			{
-				image.x = _body.GetPosition().x*ws;
-				image.y = _body.GetPosition().y*ws;
-			}
-		}
-		
-		override protected function defineBody():void
-		{
-			_bodyDef = new b2BodyDef();
-			_bodyDef.type = b2Body.b2_dynamicBody;
-			_bodyDef.position.Set(x/ws, y/ws);
-		}
-		
-		override protected function createBody():void
-		{
-			_body = _box2D.world.CreateBody(_bodyDef);
-			_body.SetUserData(this);
 		}
 		
 		override protected function createShape():void
@@ -70,22 +51,12 @@ package objects{
 			_fixtureDef.restitution = 0.4;
 		}
 		
-		override protected function createFixture():void
-		{
-			_fixture = _body.CreateFixture(_fixtureDef);
-			
-			image = new CitrusSprite("b", {x:_body.GetPosition().x * ws, y:_body.GetPosition().y * ws,group:3,
-				view:new Image(Assets.getAtlas().getTexture("shoot")), registration:"center"});
-			_ce.state.add(image);
-		}
-		
 		override public function handleBeginContact(contact:b2Contact):void
 		{
 			var affectedBody:b2Body = Box2DUtils.CollisionGetOther(this, contact).body;
 			if (!(affectedBody.GetUserData() is PopupSensor) && !(affectedBody.GetUserData() is Sensor) && !(affectedBody.GetUserData() is Coin)) 
 			{
 				_ce.state.remove(this);
-				_ce.state.remove(this.image);
 			}
 			if (contact.GetFixtureA().GetBody().GetUserData().hasOwnProperty("name") &&  contact.GetFixtureA().GetBody().GetUserData().name == "ice") 
 			{
