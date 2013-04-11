@@ -1,10 +1,11 @@
 package objects {
 	
-	import Box2D.Dynamics.b2Body;
 	import Box2D.Dynamics.Contacts.b2Contact;
+	import Box2D.Dynamics.b2Body;
 	
 	import characters.HeroSnowman;
 	
+	import citrus.core.SoundManager;
 	import citrus.objects.Box2DPhysicsObject;
 	import citrus.objects.CitrusSprite;
 	import citrus.physics.box2d.Box2DUtils;
@@ -60,6 +61,7 @@ package objects {
 			onBeginContact.dispatch(contact);
 			
 			if (Box2DUtils.CollisionGetOther(this, contact) is HeroSnowman)
+				SoundManager.getInstance().playSound("popup", 0.6, 0);
 				showPopUp();
 		}
 		

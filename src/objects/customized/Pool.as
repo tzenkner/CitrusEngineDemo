@@ -3,21 +3,24 @@ package objects.customized
 	import Box2D.Collision.Shapes.b2PolygonShape;
 	import Box2D.Collision.Shapes.b2Shape;
 	import Box2D.Common.Math.b2Vec2;
+	import Box2D.Dynamics.Contacts.b2Contact;
+	import Box2D.Dynamics.Controllers.b2BuoyancyController;
+	import Box2D.Dynamics.Controllers.b2ControllerEdge;
 	import Box2D.Dynamics.b2Body;
 	import Box2D.Dynamics.b2BodyDef;
 	import Box2D.Dynamics.b2Fixture;
 	import Box2D.Dynamics.b2FixtureDef;
-	import Box2D.Dynamics.Contacts.b2Contact;
-	import Box2D.Dynamics.Controllers.b2BuoyancyController;
-	import Box2D.Dynamics.Controllers.b2ControllerEdge;
 	
+	import characters.HeroSnowman;
+	
+	import citrus.core.SoundManager;
 	import citrus.objects.Box2DPhysicsObject;
 	import citrus.physics.box2d.Box2DShapeMaker;
 	import citrus.physics.box2d.Box2DUtils;
 	
 	import dragonBones.Armature;
+	
 	import objects.IceBlock;
-	import characters.HeroSnowman;
 	
 	public class Pool extends Box2DPhysicsObject
 	{
@@ -28,6 +31,7 @@ package objects.customized
 		public var ws:int = 30;
 		public var createBottom:Boolean = true;
 		public var hot:Boolean = false;
+		public var useSound:Boolean = false;
 		
 		private var pool:b2Body;
 		private var poolFixtureDef:b2FixtureDef;
@@ -133,8 +137,10 @@ package objects.customized
 			{
 				var bodyA:b2Body= Box2DUtils.CollisionGetOther(this, contact).body;
 				hero = (_ce.state.getObjectByName("snowman") as HeroSnowman);
-				if (bodyA.GetUserData().name == "snowman") {
+				if (bodyA.GetUserData().name == "snowman") 
+				{
 					originalSize = new b2Vec2(hero.width/ws, hero.height/ws);
+					
 					if (hot && !hero.onSwimmingPlatform)
 					{
 						hero.body.ApplyImpulse(new b2Vec2(0, -30), hero.body.GetLocalCenter());
@@ -146,6 +152,7 @@ package objects.customized
 					}
 					else if(!hero.onSwimmingPlatform)
 					{
+						if (useSound) SoundManager.getInstance().playSound("heroEnterPool", 0.7, 0);
 						hero.isSwimming = true;
 						(hero.view as Armature).getBone("frontDownArm").childArmature.animation.gotoAndPlay("noWepaon");
 						hero.body.GetFixtureList().SetFriction(0.01);
@@ -162,6 +169,7 @@ package objects.customized
 					}
 				}
 				else if (bodyA.GetUserData().name == "ice") {
+					SoundManager.getInstance().playSound("iceEnterPool", 0.7, 0);
 					(_ce.state.getObjectByName("ice") as IceBlock).melt(contact.GetFixtureA().GetUserData().index);
 					
 				}

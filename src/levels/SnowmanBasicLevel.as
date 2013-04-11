@@ -6,6 +6,7 @@ package levels{
 	import characters.HeroSnowman;
 	
 	import citrus.core.CitrusEngine;
+	import citrus.core.SoundManager;
 	import citrus.core.starling.StarlingState;
 	import citrus.input.controllers.Keyboard;
 	import citrus.math.MathVector;
@@ -112,7 +113,7 @@ package levels{
 			filterDataNone.maskBits = PhysicsCollisionCategories.GetNone();
 			
 			box2D = new Box2D("box2D");
-//						box2D.visible = true;
+			//						box2D.visible = true;
 			box2D.gravity.y = 10;
 			add(box2D);
 			
@@ -135,7 +136,7 @@ package levels{
 			_factory = new StarlingFactory();
 			_factory.addSkeletonData(skeletonData);
 			_factory.addTextureAtlas(Assets.getAtlas(), "snowman2small");
-
+			
 			createHero();
 		}
 		
@@ -173,11 +174,19 @@ package levels{
 		private function takeDamage():void
 		{
 			lifebar.ratio -= 1/3;
-			if (lifebar.ratio < 0.1) die();
+			if (lifebar.ratio < 0.1) 
+			{
+				die();
+			}
+			else 
+			{
+				SoundManager.getInstance().playSound("hurt", 1, 0);
+			}
 		}
 		
 		protected function die():void
 		{
+				SoundManager.getInstance().playSound("die", 1, 0);
 			snowman.isDead = true;
 			arm.gotoAndPlay("noWepaon");
 			_armature.addEventListener(AnimationEvent.COMPLETE, resetToLastCheckpoint);
@@ -193,10 +202,10 @@ package levels{
 			_armature.removeEventListener(AnimationEvent.COMPLETE, resetToLastCheckpoint);
 			
 			TweenLite.to(snowman, 1.5, {delay:0.2, x:checkPoints[checkPointIndex].x, y:checkPoints[checkPointIndex].y,
-							onComplete:function():void{
-								snowman.body.SetType(2); 
-								snowman.visible=true; 
-								lifebar.ratio = 1}
+				onComplete:function():void{
+					snowman.body.SetType(2); 
+					snowman.visible=true; 
+					lifebar.ratio = 1}
 			});
 		}
 		
@@ -276,6 +285,7 @@ package levels{
 			
 			var bullet:Bullet = new Bullet("bullet", {x:p.x, y:p.y, view:Assets.getAtlas().getTexture("shoot"), group:3,
 				speed:new b2Vec2(20 * pre*Math.cos(_armature.getBone("frontUpArm").node.rotation), 20 * Math.sin(_armature.getBone("frontUpArm").node.rotation))});
+			SoundManager.getInstance().playSound("shoot", 0.7, 0);
 			add(bullet);
 		}
 		

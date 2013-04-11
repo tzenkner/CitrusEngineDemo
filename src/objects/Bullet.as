@@ -2,11 +2,12 @@ package objects{
 	
 	import Box2D.Collision.Shapes.b2CircleShape;
 	import Box2D.Common.Math.b2Vec2;
+	import Box2D.Dynamics.Contacts.b2Contact;
 	import Box2D.Dynamics.b2Body;
 	import Box2D.Dynamics.b2BodyDef;
 	import Box2D.Dynamics.b2FixtureDef;
-	import Box2D.Dynamics.Contacts.b2Contact;
 	
+	import citrus.core.SoundManager;
 	import citrus.objects.Box2DPhysicsObject;
 	import citrus.objects.CitrusSprite;
 	import citrus.objects.platformer.box2d.Coin;
@@ -54,12 +55,17 @@ package objects{
 			if (!(affectedBody.GetUserData() is PopupSensor) && !(affectedBody.GetUserData() is Sensor) && !(affectedBody.GetUserData() is Coin)) 
 			{
 				_ce.state.remove(this);
-			}
-			if (contact.GetFixtureA().GetBody().GetUserData().hasOwnProperty("name") &&  contact.GetFixtureA().GetBody().GetUserData().name == "ice") 
-			{
-				contact.GetFixtureA().GetBody().SetType(2);
-				contact.GetFixtureA().GetBody().ApplyImpulse(new b2Vec2(speed.x/2, speed.y), contact.GetFixtureA().GetBody().GetWorldCenter());
-				contact.GetFixtureA().GetBody().ApplyTorque(50);
+				if (contact.GetFixtureA().GetBody().GetUserData().hasOwnProperty("name") &&  contact.GetFixtureA().GetBody().GetUserData().name == "ice") 
+				{
+					SoundManager.getInstance().playSound("iceBlockHit", 1, 0);
+					contact.GetFixtureA().GetBody().SetType(2);
+					contact.GetFixtureA().GetBody().ApplyImpulse(new b2Vec2(speed.x/2, speed.y), contact.GetFixtureA().GetBody().GetWorldCenter());
+					contact.GetFixtureA().GetBody().ApplyTorque(50);
+				}
+				else
+				{
+					SoundManager.getInstance().playSound("wallHit", 2, 0);
+				}
 			}
 		}
 	}

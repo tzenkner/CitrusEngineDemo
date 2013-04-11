@@ -282,7 +282,6 @@ package objects
 		
 		public function melt(index:int):void
 		{
-			trace(index);
 			var filter:b2FilterData = new b2FilterData();
 			filter.maskBits = PhysicsCollisionCategories.GetNone();
 			bodies[index].GetFixtureList().SetFilterData(filter);

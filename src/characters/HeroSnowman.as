@@ -1,13 +1,11 @@
 package characters
 {
-	import flash.geom.Point;
-	import flash.utils.setTimeout;
-	
-	import Box2D.Collision.b2Manifold;
 	import Box2D.Collision.Shapes.b2Shape;
+	import Box2D.Collision.b2Manifold;
 	import Box2D.Common.Math.b2Vec2;
 	import Box2D.Dynamics.Contacts.b2Contact;
 	
+	import citrus.core.SoundManager;
 	import citrus.math.MathVector;
 	import citrus.objects.Box2DPhysicsObject;
 	import citrus.objects.complex.box2dstarling.Bridge;
@@ -22,6 +20,9 @@ package characters
 	
 	import dragonBones.Armature;
 	import dragonBones.events.AnimationEvent;
+	
+	import flash.geom.Point;
+	import flash.utils.setTimeout;
 	
 	import objects.SwimmingPlatform;
 	import objects.customized.Pool;
@@ -51,6 +52,8 @@ package characters
 		private var autoAnimation:Boolean = true;
 		private var idleCount:int = 0;
 		private var idleCountMax:int = 0;
+		
+		private var sounds:SoundManager = SoundManager.getInstance();
 		
 		public function HeroSnowman(name:String, params:Object=null)
 		{
@@ -198,6 +201,7 @@ package characters
 						_onGround = false;
 						velocity.y = -jumpHeight;
 						onJump.dispatch();
+						sounds.playSound("jump", 0.4, 0);
 					}
 					if (_ce.input.isDoing("jump", inputChannel) && !_onGround && velocity.y < 0)
 					{
@@ -220,9 +224,15 @@ package characters
 						this.body.ApplyImpulse(new b2Vec2(-0.8, 0), this.body.GetLocalCenter());
 						moveKeyPressed = true;
 					}
+					if (_ce.input.isDoing("down", inputChannel))
+					{
+						this.body.ApplyImpulse(new b2Vec2(0, 0.5), this.body.GetLocalCenter());
+						moveKeyPressed = true;
+					}
 					
 					if (_ce.input.justDid("jump", inputChannel))
 					{
+						sounds.playSound("swim", 1, 0);
 						if (this.y < -350) 
 						{
 							_onGround = false;
@@ -251,6 +261,7 @@ package characters
 					{
 						(_ce.state.getObjectByName(currentRope) as Rope).stopClimbing();
 						(_ce.state.getObjectByName(currentRope) as Rope).removeJoint();
+						sounds.playSound("jump", 0.4, 0);
 					}
 					if (_ce.input.hasDone("up", inputChannel))
 					{
@@ -284,6 +295,7 @@ package characters
 					if (_ce.input.justDid("jump", inputChannel) && !isShooting)
 					{
 						isAiming = false;
+						sounds.playSound("jump", 0.4, 0);
 						armRotation = (this.view as Armature).getBone("frontUpArm").node.rotation;
 						(this.view as Armature).getBone("frontUpArm").node.rotation = 0;
 						(this.view as Armature).getBone("backUpArm").node.rotation = 0;
@@ -298,7 +310,7 @@ package characters
 					else if (_ce.input.justDid("shoot", inputChannel) && !isShooting)
 					{
 						isShooting = true;
-						onShoot.dispatch();					
+						onShoot.dispatch();	
 					}
 					else if (_ce.input.justDid("changeWeapon", inputChannel))
 					{

@@ -1,9 +1,5 @@
 package levels {
 	
-	import com.greensock.TweenLite;
-	
-	import flash.display.MovieClip;
-	
 	import Box2D.Common.Math.b2Vec2;
 	import Box2D.Dynamics.Contacts.b2Contact;
 	
@@ -12,6 +8,7 @@ package levels {
 	import characters.Shark;
 	
 	import citrus.core.CitrusObject;
+	import citrus.core.SoundManager;
 	import citrus.objects.CitrusSprite;
 	import citrus.objects.complex.box2dstarling.Bridge;
 	import citrus.objects.platformer.box2d.Coin;
@@ -19,9 +16,13 @@ package levels {
 	import citrus.objects.platformer.box2d.Sensor;
 	import citrus.objects.platformer.box2d.Teleporter;
 	
+	import com.greensock.TweenLite;
+	
 	import dragonBones.Armature;
 	
 	import effects.Particles;
+	
+	import flash.display.MovieClip;
 	
 	import objects.IceBlock;
 	import objects.PopupSensor;
@@ -48,6 +49,8 @@ package levels {
 		override public function initialize():void {
 			
 			super.initialize();
+			
+			Sounds.addSoundFiles();
 			
 			createObjects();
 		}
@@ -95,7 +98,7 @@ package levels {
 				numSegments:10, segmentTexture:Assets.getAtlas().getTexture("rope"), useTexture:true, heroAnchorOffset:new b2Vec2(0, -((snowman.height+36)/2))});
 			add(rope7);
 			
-			var pool:Pool = new Pool("pool",{x:460, y: -77, poolWidth:370, poolHeight:145, waterHeight:145, createBottom:false, hot:true});
+			var pool:Pool = new Pool("pool",{x:460, y: -77, poolWidth:370, poolHeight:145, waterHeight:145, createBottom:false, hot:true, useSound:true});
 			add(pool);
 			var pool1:Pool = new Pool("pool1",{x:1530, y: 750, poolWidth:1520, poolHeight:325, createBottom:false, waterHeight:265});
 			add(pool1);
@@ -172,9 +175,11 @@ package levels {
 			endHint.createTextField("", endHint.x, endHint.y);
 			endHint.onBeginContact.add(function():void{endHint.tf.text = "Level End!\nYou have collected "
 				+_ce.gameData.coins+" out of "+vecCoins.length+" coins\nNext Level coming soon..."});
+			
+			SoundManager.getInstance().playSound("bgMusic");
 		}
-		
-		// function i use for tweening the camera
+
+		// function i use for tweening the camera, quick and dirty..
 		private function zoomIn(contact:b2Contact):void {
 			
 			if (contact.GetFixtureA().GetBody().GetUserData() is HeroSnowman || contact.GetFixtureB().GetBody().GetUserData() is HeroSnowman) {
@@ -196,6 +201,7 @@ package levels {
 		{
 			if (contact.GetFixtureA().GetBody().GetUserData() is HeroSnowman || contact.GetFixtureB().GetBody().GetUserData() is HeroSnowman)
 			{
+				SoundManager.getInstance().playSound("coin", 1, 0);
 				_ce.gameData.coins++;
 			}
 		}
