@@ -27,7 +27,7 @@ package objects
 		public var display:CitrusSprite;
 		public var texture:Texture;
 		
-		//to prevent them from floating anywhere this are values to control the position
+		//to prevent them from floating away these are values to control the position
 		private var targetX:Number;
 		private var targetY:Number;
 		

@@ -16,7 +16,7 @@ package objects{
 	
 	import starling.display.Image;
 	
-	// this are my bodies created for shooting
+	// these are my bodies created for shooting
 	public class Bullet extends Box2DPhysicsObject
 	{
 		public var speed:b2Vec2 = new b2Vec2(30, 0);
