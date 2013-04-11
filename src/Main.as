@@ -12,7 +12,7 @@ package
 	{
 		public function Main()
 		{
-			setUpStarling();
+			setUpStarling(true);
 			
 			gameData = new MyGameData();
 			

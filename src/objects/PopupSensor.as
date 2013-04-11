@@ -71,10 +71,12 @@ package objects {
 		{
 			onEndContact.dispatch(contact);
 			
-			if (oneTime) _ce.state.remove(this);
 			
 			if (Box2DUtils.CollisionGetOther(this, contact) is HeroSnowman)
+			{
 				hidePopUp();
+				if (oneTime) _ce.state.remove(this);
+			}
 		}
 		
 		public function createTextField(text:String, x:Number, y:Number):void
@@ -95,12 +97,12 @@ package objects {
 		
 		private function showPopUp():void 
 		{
-				sprite.visible = true;
+			sprite.visible = true;
 		}
 		
 		private function hidePopUp():void 
 		{
-				sprite.visible = false;
+			sprite.visible = false;
 		}
 	}
 }
