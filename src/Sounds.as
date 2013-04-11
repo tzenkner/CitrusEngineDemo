@@ -4,11 +4,6 @@ package
 	
 	public class Sounds
 	{
-//		private static var jumpSound:Sound = new Sound(new URLRequest("../sounds/jump.mp3"));
-//		private static var swimSound:Sound = new Sound(new URLRequest("../sounds/swim.mp3"));
-//		private static var coinSound:Sound = new Sound(new URLRequest("../sounds/coin.mp3"));
-//		private static var shootSound:Sound = new Sound(new URLRequest("../sounds/shoot.mp3"));
-		
 		public static function addSoundFiles():void
 		{
 			SoundManager.getInstance().addSound("jump", "../sounds/jump.mp3");
@@ -26,8 +21,6 @@ package
 			SoundManager.getInstance().addSound("die", "../sounds/die.mp3");
 			SoundManager.getInstance().addSound("popup", "../sounds/popup.mp3");
 			SoundManager.getInstance().addSound("boil", "../sounds/boiling_water.mp3");
-			
-			SoundManager.getInstance().preLoadSounds();
 		}
 	}
 }
