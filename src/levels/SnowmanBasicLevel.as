@@ -1,6 +1,7 @@
 package levels{
 	
 	import Box2D.Common.Math.b2Vec2;
+	import Box2D.Dynamics.Contacts.b2Contact;
 	import Box2D.Dynamics.b2FilterData;
 	
 	import characters.HeroSnowman;
@@ -349,6 +350,15 @@ package levels{
 			{
 				stopShooting();
 				startShooting();
+			}
+		}
+		
+		protected function coinCollected(contact:b2Contact):void
+		{
+			if (contact.GetFixtureA().GetBody().GetUserData() is HeroSnowman || contact.GetFixtureB().GetBody().GetUserData() is HeroSnowman)
+			{
+				SoundManager.getInstance().playSound("coin", 1, 0);
+				_ce.gameData.coins++;
 			}
 		}
 	}

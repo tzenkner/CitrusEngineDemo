@@ -61,8 +61,10 @@ package objects {
 			onBeginContact.dispatch(contact);
 			
 			if (Box2DUtils.CollisionGetOther(this, contact) is HeroSnowman)
+			{
 				SoundManager.getInstance().playSound("popup", 0.6, 0);
 				showPopUp();
+			}
 		}
 		
 		override public function handleEndContact(contact:b2Contact):void 

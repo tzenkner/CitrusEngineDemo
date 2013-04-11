@@ -82,21 +82,21 @@ package levels {
 			var rope:Rope = new Rope("rope", {group:2, anchor:getObjectByName("one"), ropeLength:110, widthSegment:1,
 				numSegments:11, segmentTexture:Assets.getAtlas().getTexture("rope"), useTexture:true, heroAnchorOffset:new b2Vec2(0, -((snowman.height+36)/2))});
 			add(rope);
-			var rope1:Rope = new Rope("rope1", {group:2, anchor:getObjectByName("two"), ropeLength:100, widthSegment:1,
+			var rope2:Rope = new Rope("rope1", {group:2, anchor:getObjectByName("two"), ropeLength:100, widthSegment:1,
 				numSegments:10, segmentTexture:Assets.getAtlas().getTexture("rope"), useTexture:true, heroAnchorOffset:new b2Vec2(0, -((snowman.height+36)/2))});
-			add(rope1);
-			var rope3:Rope = new Rope("rope3", {group:2, anchor:getObjectByName("caveTop"), ropeLength:160, widthSegment:1,
-				numSegments:12, segmentTexture:Assets.getAtlas().getTexture("rope"), useTexture:true, heroAnchorOffset:new b2Vec2(0, -((snowman.height+36)/2))});
-			add(rope3);
-			var rope5:Rope = new Rope("rope5", {group:2, anchor:getObjectByName("ropeTreeOne"), ropeLength:150, widthSegment:1,
-				numSegments:12, segmentTexture:Assets.getAtlas().getTexture("rope"), useTexture:true, heroAnchorOffset:new b2Vec2(0, -((snowman.height+36)/2))});
-			add(rope5);
-			var rope6:Rope = new Rope("rope6", {group:2, anchor:getObjectByName("ropeTreeTwo"), ropeLength:150, widthSegment:1,
-				numSegments:12, segmentTexture:Assets.getAtlas().getTexture("rope"), useTexture:true, heroAnchorOffset:new b2Vec2(0, -((snowman.height+36)/2))});
-			add(rope6);
-			var rope7:Rope = new Rope("rope7", {group:2, anchor:getObjectByName("four"), ropeLength:100, widthSegment:1,
+			add(rope2);
+			var rope4:Rope = new Rope("rope4", {group:2, anchor:getObjectByName("four"), ropeLength:100, widthSegment:1,
 				numSegments:10, segmentTexture:Assets.getAtlas().getTexture("rope"), useTexture:true, heroAnchorOffset:new b2Vec2(0, -((snowman.height+36)/2))});
-			add(rope7);
+			add(rope4);
+			var ropeCaveTop:Rope = new Rope("ropeCaveTop", {group:2, anchor:getObjectByName("caveTop"), ropeLength:160, widthSegment:1,
+				numSegments:12, segmentTexture:Assets.getAtlas().getTexture("rope"), useTexture:true, heroAnchorOffset:new b2Vec2(0, -((snowman.height+36)/2))});
+			add(ropeCaveTop);
+			var ropeTreeOne:Rope = new Rope("ropeTreeOne", {group:2, anchor:getObjectByName("ropeTreeOne"), ropeLength:150, widthSegment:1,
+				numSegments:12, segmentTexture:Assets.getAtlas().getTexture("rope"), useTexture:true, heroAnchorOffset:new b2Vec2(0, -((snowman.height+36)/2))});
+			add(ropeTreeOne);
+			var ropeTreeTwo:Rope = new Rope("ropeTreeTwo", {group:2, anchor:getObjectByName("ropeTreeTwo"), ropeLength:150, widthSegment:1,
+				numSegments:12, segmentTexture:Assets.getAtlas().getTexture("rope"), useTexture:true, heroAnchorOffset:new b2Vec2(0, -((snowman.height+36)/2))});
+			add(ropeTreeTwo);
 			
 			var pool:Pool = new Pool("pool",{x:460, y: -77, poolWidth:370, poolHeight:145, waterHeight:145, createBottom:false, hot:true, useSound:true});
 			add(pool);
@@ -111,12 +111,12 @@ package levels {
 			particles.particlesBubble.emitterY= pool.y-15;
 			particles.particlesBubble.start();
 			
-			var sp:SwimmingPlatform = new SwimmingPlatform("sp", {x:300, y: -600, texture:Assets.getAtlas().getTexture("swimmingPlatform")});
-			add(sp);
-			add(sp.display);
-			var sp1:SwimmingPlatform = new SwimmingPlatform("sp", {x:610, y: -600, texture:Assets.getAtlas().getTexture("swimmingPlatform")});
-			add(sp1);
-			add(sp1.display);
+			var spLeft:SwimmingPlatform = new SwimmingPlatform("spLeft", {x:300, y: -600, texture:Assets.getAtlas().getTexture("swimmingPlatform")});
+			add(spLeft);
+			add(spLeft.display);
+			var spRight:SwimmingPlatform = new SwimmingPlatform("spRight", {x:610, y: -600, texture:Assets.getAtlas().getTexture("swimmingPlatform")});
+			add(spRight);
+			add(spRight.display);
 			
 			(getObjectByName("teleporter") as Teleporter).object = snowman;
 			(getObjectByName("teleporter") as Teleporter).onBeginContact.add(function():void{snowman.isSwimming = false;});
@@ -197,15 +197,6 @@ package levels {
 						})
 					}
 				});
-			}
-		}
-		
-		private function coinCollected(contact:b2Contact):void
-		{
-			if (contact.GetFixtureA().GetBody().GetUserData() is HeroSnowman || contact.GetFixtureB().GetBody().GetUserData() is HeroSnowman)
-			{
-				SoundManager.getInstance().playSound("coin", 1, 0);
-				_ce.gameData.coins++;
 			}
 		}
 	}
