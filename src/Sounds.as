@@ -25,6 +25,7 @@ package
 			SoundManager.getInstance().addSound("hurt", "../sounds/hurt.mp3");
 			SoundManager.getInstance().addSound("die", "../sounds/die.mp3");
 			SoundManager.getInstance().addSound("popup", "../sounds/popup.mp3");
+			SoundManager.getInstance().addSound("boil", "../sounds/boiling_water.mp3");
 			
 			SoundManager.getInstance().preLoadSounds();
 		}

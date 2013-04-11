@@ -119,6 +119,7 @@ package levels {
 			add(sp1.display);
 			
 			(getObjectByName("teleporter") as Teleporter).object = snowman;
+			(getObjectByName("teleporter") as Teleporter).onBeginContact.add(function():void{snowman.isSwimming = false;});
 			(getObjectByName("no2") as Platform).oneWay = true;
 			(getObjectByName("fg") as CitrusSprite).view = new Image(Assets.getAtlas().getTexture("fgWater"));
 			(getObjectByName("fg1") as CitrusSprite).view = new Image(Assets.getAtlas().getTexture("fgWater2"));
@@ -177,12 +178,14 @@ package levels {
 				+_ce.gameData.coins+" out of "+vecCoins.length+" coins\nNext Level coming soon..."});
 			
 			SoundManager.getInstance().playSound("bgMusic");
+			SoundManager.getInstance().playSound("boil", 0.2);
 		}
 
 		// function i use for tweening the camera, quick and dirty..
 		private function zoomIn(contact:b2Contact):void {
 			
 			if (contact.GetFixtureA().GetBody().GetUserData() is HeroSnowman || contact.GetFixtureB().GetBody().GetUserData() is HeroSnowman) {
+				SoundManager.getInstance().setVolume("boil", 0.9)
 				var ob:Object = {x:snowman.x, y:snowman.y};
 				camera.target = ob;
 				snowman.controlsEnabled = false;

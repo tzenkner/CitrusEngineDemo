@@ -1,16 +1,17 @@
 package objects 
 {
-	import com.greensock.TweenLite;
-	
 	import Box2D.Collision.Shapes.b2PolygonShape;
 	import Box2D.Dynamics.b2Body;
 	import Box2D.Dynamics.b2BodyDef;
 	import Box2D.Dynamics.b2FilterData;
 	import Box2D.Dynamics.b2FixtureDef;
 	
+	import citrus.core.SoundManager;
 	import citrus.objects.Box2DPhysicsObject;
 	import citrus.objects.CitrusSprite;
 	import citrus.physics.PhysicsCollisionCategories;
+	
+	import com.greensock.TweenLite;
 	
 	import objects.customized.Pool;
 	
@@ -292,6 +293,7 @@ package objects
 				((_ce.state.getObjectByName("bubbles") as CitrusSprite).view as PDParticleSystem).maxNumParticles -= 15;
 				((_ce.state.getObjectByName("bubbles") as CitrusSprite).view as PDParticleSystem).speed -= 7;
 				((_ce.state.getObjectByName("bubbles") as CitrusSprite).view as PDParticleSystem).speedVariance -= 0.3;
+				SoundManager.getInstance().setVolume("boil", SoundManager.getInstance().getSoundVolume("boil") - 0.03)
 				if (poolIceCount < 7) ((_ce.state.getObjectByName("bubbles") as CitrusSprite).view as PDParticleSystem).lifespan += 0.13;
 				else if (poolIceCount < 11) ((_ce.state.getObjectByName("bubbles") as CitrusSprite).view as PDParticleSystem).lifespan += 0.19;
 				else if (poolIceCount < 13) ((_ce.state.getObjectByName("bubbles") as CitrusSprite).view as PDParticleSystem).lifespan += 0.4;
@@ -300,6 +302,7 @@ package objects
 					((_ce.state.getObjectByName("bubbles") as CitrusSprite).view as PDParticleSystem).pause();
 					(_ce.state.getObjectByName("pool") as Pool).hot = false;
 					_ce.state.remove(this);
+					SoundManager.getInstance().stopSound("boil");
 				}
 			}
 		}
