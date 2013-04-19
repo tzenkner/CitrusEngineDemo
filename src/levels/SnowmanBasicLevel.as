@@ -7,7 +7,9 @@ package levels{
 	import characters.HeroSnowman;
 	
 	import citrus.core.CitrusEngine;
+	import citrus.core.CitrusObject;
 	import citrus.core.SoundManager;
+	import citrus.core.starling.StarlingCitrusEngine;
 	import citrus.core.starling.StarlingState;
 	import citrus.input.controllers.Keyboard;
 	import citrus.math.MathVector;
@@ -35,6 +37,7 @@ package levels{
 	
 	import effects.Particles;
 	
+	import flash.display.Bitmap;
 	import flash.display.MovieClip;
 	import flash.events.Event;
 	import flash.events.TimerEvent;
@@ -48,7 +51,14 @@ package levels{
 	
 	import org.osflash.signals.Signal;
 	
+	import starling.core.Starling;
+	import starling.display.DisplayObject;
+	import starling.display.Quad;
 	import starling.display.Sprite;
+	import starling.text.BitmapFont;
+	import starling.text.TextField;
+	import starling.textures.Texture;
+	import starling.utils.Color;
 	import starling.utils.deg2rad;
 	import starling.utils.rad2deg;
 	
@@ -59,6 +69,21 @@ package levels{
 		
 		[Embed(source = "/../embeds/skeleton.xml",mimeType = "application/octet-stream")]
 		private const SkeletonDataXML:Class;
+		
+		[Embed(source="/../embeds/AtariFont.fnt", mimeType="application/octet-stream")]
+		private var _fontConfig:Class;
+		[Embed(source="/../embeds/AtariFont.png")]
+		private var _fontPng:Class;
+		
+		[Embed(source="/../embeds/AtariBig.fnt", mimeType="application/octet-stream")]
+		private var _snowConfig:Class;
+		[Embed(source="/../embeds/AtariBig_0.png")]
+		private var _snowPng:Class;
+		
+		[Embed(source="/../embeds/Bitwise.fnt", mimeType="application/octet-stream")]
+		private var _bitwiseConfig:Class;
+		[Embed(source="/../embeds/Bitwise_0.png")]
+		private var _bitwisePng:Class;
 		
 		protected var _factory:StarlingFactory;
 		protected var _armature:Armature;
@@ -86,17 +111,24 @@ package levels{
 		public var lvlEnded:Signal;
 		public var restartLevel:Signal;
 		
-		public var lifebar:LifeBar;
+		public var display:IngameDisplay;
 		public var filterDataNone:b2FilterData;
 		
-		protected var checkPointIndex:int = 0;
-		protected var checkPoints:Vector.<b2Vec2>;
+		protected var _maskDuringLoading:Quad;
+		protected var _percentTF:TextField;
+		protected var _titleTF:TextField;
+		protected var _levelTF:TextField;
+		
+		private var loading:Boolean = true;
+		
+		protected var gamedata:MyGameData;
 		
 		public function SnowmanBasicLevel(level:MovieClip = null) 
 		{
 			super();
 			
 			_ce = CitrusEngine.getInstance();
+			gamedata = _ce.gameData as MyGameData;
 			
 			_level = level;
 			
@@ -106,8 +138,10 @@ package levels{
 			var objectsUsed:Array = [Platform, Enemy, Sensor, CitrusSprite, MovingPlatform, Teleporter, Pool, PopupSensor];
 		}
 		
-		override public function initialize():void {
+		override public function initialize():void 
+		{
 			super.initialize();
+			
 			stage.color = 0x0000ff;
 			
 			filterDataNone = new b2FilterData();
@@ -118,30 +152,80 @@ package levels{
 			box2D.gravity.y = 10;
 			add(box2D);
 			
+			ObjectMaker2D.FromMovieClip(_level);
+			
 			_ce.input.keyboard.addKeyAction("jump", Keyboard.SPACE);
 			_ce.input.keyboard.addKeyAction("shoot", Keyboard.Y);
 			_ce.input.keyboard.addKeyAction("shoot", Keyboard.CTRL);
 			_ce.input.keyboard.addKeyAction("changeWeapon", Keyboard.X);
+
+			registerFonts();
 			
 			bulletTimer = new Timer(500);
 			bulletTimer.addEventListener(TimerEvent.TIMER, onBulletTimer);
-			
-			lifebar = new LifeBar(Assets.getAtlas().getTexture("lifebar"));
-			lifebar.x = 840;
-			lifebar.y = 10;
-			lifebar.name = "lifebar";
-			addChild(lifebar);
 			
 			// the skeleton data for DragonBones, the body parts are included in my level spritesheet
 			skeletonData = XMLDataParser.parseSkeletonData(XML(new SkeletonDataXML()));
 			_factory = new StarlingFactory();
 			_factory.addSkeletonData(skeletonData);
 			_factory.addTextureAtlas(Assets.getAtlas(), "snowman2small");
-			
-			createHero();
 		}
 		
-		private function createHero():void
+		private function registerFonts():void
+		{
+			var bitmap:Bitmap = new _fontPng();
+			var ftTexture:Texture = Texture.fromBitmap(bitmap);
+			var ftXML:XML = XML(new _fontConfig());
+			TextField.registerBitmapFont(new BitmapFont(ftTexture, ftXML), "Atari");
+			
+			bitmap = new _snowPng();
+			ftTexture = Texture.fromBitmap(bitmap);
+			ftXML = XML(new _snowConfig());
+			TextField.registerBitmapFont(new BitmapFont(ftTexture, ftXML), "AtariBig");
+			
+			bitmap = new _bitwisePng();
+			ftTexture = Texture.fromBitmap(bitmap);
+			ftXML = XML(new _bitwiseConfig());
+			TextField.registerBitmapFont(new BitmapFont(ftTexture, ftXML), "Bitwise");
+		}
+		
+		protected function addLoadingScreen(text:String):void
+		{
+			view.loadManager.onLoadComplete.addOnce(function():void{});
+			
+			_maskDuringLoading = new Quad(stage.stageWidth, stage.stageHeight);
+			_maskDuringLoading.color = 0x000000;
+			_maskDuringLoading.x = (stage.stageWidth - _maskDuringLoading.width) / 2;
+			_maskDuringLoading.y = (stage.stageHeight - _maskDuringLoading.height) / 2;
+			addChild(_maskDuringLoading);
+			
+			_titleTF = new TextField(600, 200, "", "AtariBig");
+			_titleTF.fontSize = BitmapFont.NATIVE_SIZE;
+			_titleTF.color = Color.WHITE;
+			_titleTF.text = "Snowman Land";
+			_titleTF.width = _titleTF.textBounds.width;
+			_titleTF.x = (stage.stageWidth - _titleTF.width) / 2;
+			_titleTF.y = (stage.stageHeight - _titleTF.height) / 2 - 200;
+			addChild(_titleTF);
+			
+			_percentTF = new TextField(400, 200, "", "Atari");
+			_percentTF.fontSize = BitmapFont.NATIVE_SIZE;
+			_percentTF.color = Color.WHITE;
+			_percentTF.x = (stage.stageWidth - _percentTF.width) / 2;
+			_percentTF.y = (stage.stageHeight - _percentTF.height) / 2 + 100;
+			addChild(_percentTF);
+			
+			_levelTF = new TextField(600, 200, "", "Bitwise");
+			_levelTF.fontSize = BitmapFont.NATIVE_SIZE;
+			_levelTF.color = 0x5E2605;
+			_levelTF.text = text;
+			_levelTF.width = _levelTF.textBounds.width;
+			_levelTF.x = (stage.stageWidth - _levelTF.width) / 2;
+			_levelTF.y = (stage.stageHeight - _levelTF.height) / 2;
+			addChild(_levelTF);
+		}
+		
+		protected function createHero():void
 		{
 			_armature = _factory.buildArmature("snowman");
 			
@@ -162,52 +246,11 @@ package levels{
 			snowman.onShoot.add(startShooting);
 			snowman.onShootEnd.add(stopShooting);
 			snowman.onWeaponChange.add(changeWeapon);
-			snowman.onTakeDamage.add(takeDamage);
 			
 			camera = view.camera as StarlingCamera;
 			camera.setUp(snowman, new MathVector(stage.stageWidth/2, stage.stageHeight/2 + 150), new Rectangle(0, -1328, 4096, 2048), new MathVector(0.8, 0.6));
 			camera.allowZoom = true;
 			camera.setZoom(1.4);
-			
-			ObjectMaker2D.FromMovieClip(_level);
-		}
-		
-		private function takeDamage():void
-		{
-			lifebar.ratio -= 1/3;
-			if (lifebar.ratio < 0.1) 
-			{
-				die();
-			}
-			else 
-			{
-				SoundManager.getInstance().playSound("hurt", 1, 0);
-			}
-		}
-		
-		protected function die():void
-		{
-				SoundManager.getInstance().playSound("die", 1, 0);
-			snowman.isDead = true;
-			arm.gotoAndPlay("noWepaon");
-			_armature.addEventListener(AnimationEvent.COMPLETE, resetToLastCheckpoint);
-			_armature.animation.gotoAndPlay("die");
-		}
-		
-		private function resetToLastCheckpoint(e:Event):void
-		{ 
-			arm.gotoAndPlay("gun");
-			snowman.body.SetType(0); 
-			snowman.visible=false; 
-			snowman.isDead = false; 
-			_armature.removeEventListener(AnimationEvent.COMPLETE, resetToLastCheckpoint);
-			
-			TweenLite.to(snowman, 1.5, {delay:0.2, x:checkPoints[checkPointIndex].x, y:checkPoints[checkPointIndex].y,
-				onComplete:function():void{
-					snowman.body.SetType(2); 
-					snowman.visible=true; 
-					lifebar.ratio = 1}
-			});
 		}
 		
 		private function updateParticles():void
@@ -271,6 +314,24 @@ package levels{
 		override public function update(timeDelta:Number):void {
 			
 			super.update(timeDelta);
+			if (loading)
+			{
+				if (view.camera.camPos.x < 649)
+				{
+					var percent:uint = (view.loadManager.bytesLoaded + (view.camera.camPos.x *1000)) / (view.loadManager.bytesTotal+ 649000) * 100;
+					_percentTF.text = "Loading "+percent.toString() + "%";
+				}
+				else 
+				{
+					addChild(display.lifebar);
+					removeChild(_percentTF, true);
+					
+					removeChild(_titleTF, true);
+					removeChild(_levelTF, true);
+					removeChild(_maskDuringLoading, true);
+					loading = false;
+				}
+			}
 			
 			if (snowman && snowman.isAiming)
 			{
@@ -327,6 +388,7 @@ package levels{
 					break;
 			}
 		}
+		
 		protected function stopShooting():void
 		{
 			bulletTimer.reset();
@@ -334,6 +396,7 @@ package levels{
 			particles.particlesSmoke.pause();
 			particles.particlesFire.pause();
 		}
+		
 		protected function changeWeapon():void
 		{
 			if (arm.movementID == "gun")
@@ -358,7 +421,7 @@ package levels{
 			if (contact.GetFixtureA().GetBody().GetUserData() is HeroSnowman || contact.GetFixtureB().GetBody().GetUserData() is HeroSnowman)
 			{
 				SoundManager.getInstance().playSound("coin", 1, 0);
-				_ce.gameData.coins++;
+				gamedata.coins++;
 			}
 		}
 	}

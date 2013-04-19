@@ -50,8 +50,15 @@ package levels {
 			
 			super.initialize();
 			
+			addLoadingScreen("Level 1.1 - Intro");
+			
+			display = new IngameDisplay();
+			display.name = "display";
+			addChild(display);
+			
 			Sounds.addSoundFiles();
 			
+			createHero();
 			createObjects();
 		}
 		
@@ -63,15 +70,16 @@ package levels {
 				(vecCoins[i] as Coin).setParams(vecCoins[i] as Coin, {view:new Image(Assets.getAtlas().getTexture("coin")), collectorClass:HeroSnowman});
 				(vecCoins[i] as Coin).onBeginContact.add(coinCollected);
 			}
-			checkPoints = new Vector.<b2Vec2>();
-			checkPoints.push(new b2Vec2(1120, -460), new b2Vec2(288, 410), new b2Vec2(1180, 470), new b2Vec2(1800, 520));
+			
+			gamedata.checkPoints = new Vector.<b2Vec2>();
+			gamedata.checkPoints.push(new b2Vec2(1120, -460), new b2Vec2(288, 410), new b2Vec2(1180, 470), new b2Vec2(1800, 520));
 			
 			Sensor(getObjectByName("check1")).onBeginContact.add(function():void{remove(getObjectByName("check1"))});
-			Sensor(getObjectByName("check2")).onBeginContact.add(function():void{checkPointIndex = 1; remove(getObjectByName("check2"))});
-			Sensor(getObjectByName("check3")).onBeginContact.add(function():void{checkPointIndex = 2; remove(getObjectByName("check3"))});
-			Sensor(getObjectByName("check4")).onBeginContact.add(function():void{checkPointIndex = 3; remove(getObjectByName("check4"))});
+			Sensor(getObjectByName("check2")).onBeginContact.add(function():void{gamedata.checkPointIndex = 1; remove(getObjectByName("check2"))});
+			Sensor(getObjectByName("check3")).onBeginContact.add(function():void{gamedata.checkPointIndex = 2; remove(getObjectByName("check3"))});
+			Sensor(getObjectByName("check4")).onBeginContact.add(function():void{gamedata.checkPointIndex = 3; remove(getObjectByName("check4"))});
 			
-			Sensor(getObjectByName("tooDeep")).onBeginContact.add(function():void{lifebar.ratio = 0; die()});
+			Sensor(getObjectByName("tooDeep")).onBeginContact.add(function():void{display.lifebar.ratio = 0; snowman.die()});
 			
 			var bridge2:Bridge = new Bridge("bridge2", {group:2, leftAnchor:getObjectByName("left"), rightAnchor:getObjectByName("right"),
 				numSegments:10, segmentTexture:Assets.getAtlas().getTexture("bridge1"), useTexture:true, heightSegment:5});
@@ -178,7 +186,7 @@ package levels {
 				+_ce.gameData.coins+" out of "+vecCoins.length+" coins\nNext Level coming soon..."});
 			
 			SoundManager.getInstance().playSound("bgMusic");
-			SoundManager.getInstance().playSound("boil", 0.2);
+			SoundManager.getInstance().playSound("boil", 0.1);
 		}
 
 		// function i use for tweening the camera, quick and dirty..

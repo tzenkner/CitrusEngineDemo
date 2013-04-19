@@ -17,10 +17,14 @@ package characters
 	import citrus.physics.box2d.Box2DShapeMaker;
 	import citrus.physics.box2d.Box2DUtils;
 	import citrus.physics.box2d.IBox2DPhysicsObject;
+	import citrus.ui.starling.LifeBar;
+	
+	import com.greensock.TweenLite;
 	
 	import dragonBones.Armature;
 	import dragonBones.events.AnimationEvent;
 	
+	import flash.events.Event;
 	import flash.geom.Point;
 	import flash.utils.setTimeout;
 	
@@ -29,6 +33,8 @@ package characters
 	import objects.customized.Rope;
 	
 	import org.osflash.signals.Signal;
+	
+	import starling.display.Sprite;
 	
 	public class HeroSnowman extends Hero
 	{
@@ -62,6 +68,7 @@ package characters
 			onShootEnd = new Signal();
 			onWeaponChange = new Signal();
 			off = this.offsetY;
+		
 		}
 		
 		override protected function updateAnimation():void {
@@ -368,6 +375,45 @@ package characters
 			if (autoAnimation) updateAnimation();
 		}
 		
+		private function takeDamage():void
+		{
+			IngameDisplay((_ce.state as Sprite).getChildByName("display")).lifebar.ratio -= 1/3;
+			if (IngameDisplay((_ce.state as Sprite).getChildByName("display")).lifebar.ratio < 0.1) 
+			{
+				die();
+			}
+			else 
+			{
+				SoundManager.getInstance().playSound("hurt", 1, 0);
+			}
+		}
+		
+		public function die():void
+		{
+			SoundManager.getInstance().playSound("die", 1, 0);
+			isDead = true;
+			Armature(this.view).getBone("frontDownArm").childArmature.animation.gotoAndPlay("noWepaon");
+			Armature(this.view).addEventListener(AnimationEvent.COMPLETE, resetToLastCheckpoint);
+			Armature(this.view).animation.gotoAndPlay("die");
+		}
+		
+		private function resetToLastCheckpoint(e:Event):void
+		{ 
+			Armature(this.view).getBone("frontDownArm").childArmature.animation.gotoAndPlay("gun");
+			_body.SetType(0); 
+			visible = false; 
+			isDead = false; 
+			Armature(this.view).removeEventListener(AnimationEvent.COMPLETE, resetToLastCheckpoint);
+			
+			TweenLite.to(this, 1.5, {delay:0.2, x:_ce.gameData.checkPoints[_ce.gameData.checkPointIndex].x, y:_ce.gameData.checkPoints[_ce.gameData.checkPointIndex].y,
+				onComplete:function():void{
+					_body.SetType(2); 
+					visible = true; 
+					IngameDisplay((_ce.state as Sprite).getChildByName("display")).lifebar.ratio = 1}
+			});
+		}
+		
+		
 		public function playAnimation(animation:String, duration:Number = 0):void
 		{
 			this.autoAnimation = false;
@@ -414,6 +460,7 @@ package characters
 			{
 				_hurt = true;
 				_hurtTimeoutID = setTimeout(endHurtState, hurtDuration);
+				takeDamage();
 				onTakeDamage.dispatch();
 				
 				if (_playerMovingHero)

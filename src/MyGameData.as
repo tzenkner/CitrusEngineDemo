@@ -1,12 +1,17 @@
 package{
 
+	import Box2D.Common.Math.b2Vec2;
+	
 	import citrus.utils.AGameData;
 	
 	import levels.Level1;
 
 	public class MyGameData extends AGameData {
 		
-		private var coinsCollected:int = 0;
+		public var coins:int = 0;
+		
+		public var checkPointIndex:int = 0;
+		public var checkPoints:Vector.<b2Vec2>;
 
 		public function MyGameData() {
 			
@@ -23,13 +28,6 @@ package{
 			
 			super.destroy();
 		}
-		public function get coins():int {
-			return coinsCollected;
-		}
 		
-		public function set coins(coins:int):void {
-			
-			coinsCollected = coins;
-		}
 	}
 }

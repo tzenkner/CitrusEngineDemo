@@ -10,12 +10,16 @@ package objects {
 	import citrus.objects.CitrusSprite;
 	import citrus.physics.box2d.Box2DUtils;
 	
+	import flash.display.Bitmap;
+	
 	import org.osflash.signals.Signal;
 	
 	import starling.display.Quad;
 	import starling.display.Sprite;
 	import starling.text.BitmapFont;
 	import starling.text.TextField;
+	import starling.textures.Texture;
+	import starling.utils.Color;
 	
 	public class PopupSensor extends Box2DPhysicsObject
 	{
@@ -84,9 +88,10 @@ package objects {
 			sprite = new Sprite()
 			sprite.addChild(new Quad(200, 100,0x555555));
 			sprite.visible = false;
-			tf = new TextField(200, 100, text, "ArialMT");
+			
+			tf = new TextField(200, 100, text, "Atari");
 			tf.fontSize = BitmapFont.NATIVE_SIZE;
-			tf.color = 0xffffff;
+			tf.color = Color.WHITE;
 			tf.autoScale = true;
 			sprite.addChild(tf);
 			var ts:CitrusSprite = new CitrusSprite("ts", {x:x-100, y:y-150, group:6, view:sprite});
