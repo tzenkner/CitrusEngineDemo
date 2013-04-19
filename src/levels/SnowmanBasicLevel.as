@@ -7,9 +7,7 @@ package levels{
 	import characters.HeroSnowman;
 	
 	import citrus.core.CitrusEngine;
-	import citrus.core.CitrusObject;
 	import citrus.core.SoundManager;
-	import citrus.core.starling.StarlingCitrusEngine;
 	import citrus.core.starling.StarlingState;
 	import citrus.input.controllers.Keyboard;
 	import citrus.math.MathVector;
@@ -22,15 +20,11 @@ package levels{
 	import citrus.objects.platformer.box2d.Teleporter;
 	import citrus.physics.PhysicsCollisionCategories;
 	import citrus.physics.box2d.Box2D;
-	import citrus.ui.starling.LifeBar;
 	import citrus.utils.objectmakers.ObjectMaker2D;
 	import citrus.view.starlingview.StarlingCamera;
 	
-	import com.greensock.TweenLite;
-	
 	import dragonBones.Armature;
 	import dragonBones.animation.Animation;
-	import dragonBones.events.AnimationEvent;
 	import dragonBones.factorys.StarlingFactory;
 	import dragonBones.objects.SkeletonData;
 	import dragonBones.objects.XMLDataParser;
@@ -39,7 +33,6 @@ package levels{
 	
 	import flash.display.Bitmap;
 	import flash.display.MovieClip;
-	import flash.events.Event;
 	import flash.events.TimerEvent;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
@@ -51,8 +44,6 @@ package levels{
 	
 	import org.osflash.signals.Signal;
 	
-	import starling.core.Starling;
-	import starling.display.DisplayObject;
 	import starling.display.Quad;
 	import starling.display.Sprite;
 	import starling.text.BitmapFont;
@@ -71,14 +62,14 @@ package levels{
 		private const SkeletonDataXML:Class;
 		
 		[Embed(source="/../embeds/AtariFont.fnt", mimeType="application/octet-stream")]
-		private var _fontConfig:Class;
+		private var _atariConfig:Class;
 		[Embed(source="/../embeds/AtariFont.png")]
-		private var _fontPng:Class;
+		private var _atariPng:Class;
 		
 		[Embed(source="/../embeds/AtariBig.fnt", mimeType="application/octet-stream")]
-		private var _snowConfig:Class;
+		private var _atariBigConfig:Class;
 		[Embed(source="/../embeds/AtariBig_0.png")]
-		private var _snowPng:Class;
+		private var _atariBigPng:Class;
 		
 		[Embed(source="/../embeds/Bitwise.fnt", mimeType="application/octet-stream")]
 		private var _bitwiseConfig:Class;
@@ -173,14 +164,14 @@ package levels{
 		
 		private function registerFonts():void
 		{
-			var bitmap:Bitmap = new _fontPng();
+			var bitmap:Bitmap = new _atariPng();
 			var ftTexture:Texture = Texture.fromBitmap(bitmap);
-			var ftXML:XML = XML(new _fontConfig());
+			var ftXML:XML = XML(new _atariConfig());
 			TextField.registerBitmapFont(new BitmapFont(ftTexture, ftXML), "Atari");
 			
-			bitmap = new _snowPng();
+			bitmap = new _atariBigPng();
 			ftTexture = Texture.fromBitmap(bitmap);
-			ftXML = XML(new _snowConfig());
+			ftXML = XML(new _atariBigConfig());
 			TextField.registerBitmapFont(new BitmapFont(ftTexture, ftXML), "AtariBig");
 			
 			bitmap = new _bitwisePng();
