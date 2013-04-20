@@ -1,4 +1,4 @@
-package
+package objects.UI
 {
 	import citrus.core.CitrusEngine;
 	import citrus.ui.starling.LifeBar;

@@ -52,6 +52,7 @@ package levels{
 	import starling.utils.Color;
 	import starling.utils.deg2rad;
 	import starling.utils.rad2deg;
+	import objects.UI.IngameDisplay;
 	
 	/**
 	 * @author Thomas Zenkner

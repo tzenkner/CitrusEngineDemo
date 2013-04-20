@@ -1,4 +1,4 @@
-package
+package effects
 {
 	import citrus.core.SoundManager;
 	

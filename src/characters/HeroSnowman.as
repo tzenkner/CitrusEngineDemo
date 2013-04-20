@@ -35,6 +35,7 @@ package characters
 	import org.osflash.signals.Signal;
 	
 	import starling.display.Sprite;
+	import objects.UI.IngameDisplay;
 	
 	public class HeroSnowman extends Hero
 	{

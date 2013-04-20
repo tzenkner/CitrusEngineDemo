@@ -34,6 +34,8 @@ package levels {
 	import starling.display.Sprite;
 	import starling.text.TextField;
 	import starling.textures.Texture;
+	import objects.UI.IngameDisplay;
+	import effects.Sounds;
 	
 	/**
 	 * @author Thomas Zenkner
