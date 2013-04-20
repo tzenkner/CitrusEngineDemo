@@ -63,18 +63,12 @@ package levels{
 		
 		[Embed(source="/../embeds/AtariFont.fnt", mimeType="application/octet-stream")]
 		private var _atariConfig:Class;
-		[Embed(source="/../embeds/AtariFont.png")]
-		private var _atariPng:Class;
 		
 		[Embed(source="/../embeds/AtariBig.fnt", mimeType="application/octet-stream")]
 		private var _atariBigConfig:Class;
-		[Embed(source="/../embeds/AtariBig_0.png")]
-		private var _atariBigPng:Class;
 		
 		[Embed(source="/../embeds/Bitwise.fnt", mimeType="application/octet-stream")]
 		private var _bitwiseConfig:Class;
-		[Embed(source="/../embeds/Bitwise_0.png")]
-		private var _bitwisePng:Class;
 		
 		protected var _factory:StarlingFactory;
 		protected var _armature:Armature;
@@ -150,6 +144,8 @@ package levels{
 			_ce.input.keyboard.addKeyAction("shoot", Keyboard.CTRL);
 			_ce.input.keyboard.addKeyAction("changeWeapon", Keyboard.X);
 
+			_ce.onPlayingChange.add(toggleSound);
+			
 			registerFonts();
 			
 			bulletTimer = new Timer(500);
@@ -164,20 +160,14 @@ package levels{
 		
 		private function registerFonts():void
 		{
-			var bitmap:Bitmap = new _atariPng();
-			var ftTexture:Texture = Texture.fromBitmap(bitmap);
 			var ftXML:XML = XML(new _atariConfig());
-			TextField.registerBitmapFont(new BitmapFont(ftTexture, ftXML), "Atari");
+			TextField.registerBitmapFont(new BitmapFont(Assets.getAtlas().getTexture("AtariFont"), ftXML), "Atari");
 			
-			bitmap = new _atariBigPng();
-			ftTexture = Texture.fromBitmap(bitmap);
 			ftXML = XML(new _atariBigConfig());
-			TextField.registerBitmapFont(new BitmapFont(ftTexture, ftXML), "AtariBig");
+			TextField.registerBitmapFont(new BitmapFont(Assets.getAtlas().getTexture("AtariBig_0"), ftXML), "AtariBig");
 			
-			bitmap = new _bitwisePng();
-			ftTexture = Texture.fromBitmap(bitmap);
 			ftXML = XML(new _bitwiseConfig());
-			TextField.registerBitmapFont(new BitmapFont(ftTexture, ftXML), "Bitwise");
+			TextField.registerBitmapFont(new BitmapFont(Assets.getAtlas().getTexture("Bitwise_0"), ftXML), "Bitwise");
 		}
 		
 		protected function addLoadingScreen(text:String):void
@@ -314,8 +304,8 @@ package levels{
 				}
 				else 
 				{
-					addChild(display.lifebar);
 					removeChild(_percentTF, true);
+					display.visible = true;
 					
 					removeChild(_titleTF, true);
 					removeChild(_levelTF, true);
@@ -407,12 +397,24 @@ package levels{
 			}
 		}
 		
+		private function toggleSound(playing:Boolean):void
+		{
+			playing ? _ce.sound.muteAll(false) : _ce.sound.muteAll(true);
+		}
+		
 		protected function coinCollected(contact:b2Contact):void
 		{
 			if (contact.GetFixtureA().GetBody().GetUserData() is HeroSnowman || contact.GetFixtureB().GetBody().GetUserData() is HeroSnowman)
 			{
 				SoundManager.getInstance().playSound("coin", 1, 0);
 				gamedata.coins++;
+				if (gamedata.coins == 100)
+				{
+					gamedata.coins = 0;
+					gamedata.lives++;
+					display.lifeValueText = gamedata.lives;
+				}
+				display.coinValueText = gamedata.coins;
 			}
 		}
 	}

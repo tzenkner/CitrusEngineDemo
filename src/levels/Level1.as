@@ -33,12 +33,16 @@ package levels {
 	import starling.display.Image;
 	import starling.display.Sprite;
 	import starling.text.TextField;
+	import starling.textures.Texture;
 	
 	/**
 	 * @author Thomas Zenkner
 	 */
 	public class Level1 extends SnowmanBasicLevel 
 	{
+		[Embed(source="/../embeds/fgWater.png")]
+		public static const Fg:Class;
+		
 		private var vecCoins:Vector.<CitrusObject>;
 		
 		public function Level1(level:MovieClip = null) {
@@ -54,6 +58,7 @@ package levels {
 			
 			display = new IngameDisplay();
 			display.name = "display";
+			display.visible = false;
 			addChild(display);
 			
 			Sounds.addSoundFiles();
@@ -129,7 +134,7 @@ package levels {
 			(getObjectByName("teleporter") as Teleporter).object = snowman;
 			(getObjectByName("teleporter") as Teleporter).onBeginContact.add(function():void{snowman.isSwimming = false;});
 			(getObjectByName("no2") as Platform).oneWay = true;
-			(getObjectByName("fg") as CitrusSprite).view = new Image(Assets.getAtlas().getTexture("fgWater"));
+			(getObjectByName("fg") as CitrusSprite).view = new Image(Texture.fromBitmap(new Fg()));
 			(getObjectByName("fg1") as CitrusSprite).view = new Image(Assets.getAtlas().getTexture("fgWater2"));
 			(getObjectByName("mp") as Platform).view = new Image(Assets.getAtlas().getTexture("movingPlatform"));
 			
@@ -192,7 +197,9 @@ package levels {
 		// function i use for tweening the camera, quick and dirty..
 		private function zoomIn(contact:b2Contact):void {
 			
-			if (contact.GetFixtureA().GetBody().GetUserData() is HeroSnowman || contact.GetFixtureB().GetBody().GetUserData() is HeroSnowman) {
+			if (contact.GetFixtureA().GetBody().GetUserData() is HeroSnowman || contact.GetFixtureB().GetBody().GetUserData() is HeroSnowman) 
+			{
+				snowman.body.SetLinearVelocity(new b2Vec2(0, snowman.body.GetLinearVelocity().y));
 				SoundManager.getInstance().setVolume("boil", 0.9)
 				var ob:Object = {x:snowman.x, y:snowman.y};
 				camera.target = ob;

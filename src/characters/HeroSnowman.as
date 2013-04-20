@@ -256,12 +256,12 @@ package characters
 					
 					if (_ce.input.isDoing("right", inputChannel))
 					{
-						velocity.Add(new b2Vec2(0.1, 0));
+						velocity.Add(new b2Vec2(0.2, 0));
 						moveKeyPressed = true;
 					}
 					else if (_ce.input.isDoing("left", inputChannel))
 					{
-						velocity.Subtract(new b2Vec2(0.1, 0));
+						velocity.Subtract(new b2Vec2(0.2, 0));
 						moveKeyPressed = true;
 					}
 					if (_ce.input.justDid("jump", inputChannel))
@@ -395,6 +395,8 @@ package characters
 			Armature(this.view).getBone("frontDownArm").childArmature.animation.gotoAndPlay("noWepaon");
 			Armature(this.view).addEventListener(AnimationEvent.COMPLETE, resetToLastCheckpoint);
 			Armature(this.view).animation.gotoAndPlay("die");
+			_ce.gameData.lives--;
+			IngameDisplay((_ce.state as Sprite).getChildByName("display")).lifeValueText = _ce.gameData.lives;
 		}
 		
 		private function resetToLastCheckpoint(e:Event):void

@@ -14,6 +14,7 @@ package objects {
 	
 	import org.osflash.signals.Signal;
 	
+	import starling.display.Image;
 	import starling.display.Quad;
 	import starling.display.Sprite;
 	import starling.text.BitmapFont;
@@ -86,16 +87,15 @@ package objects {
 		public function createTextField(text:String, x:Number, y:Number):void
 		{
 			sprite = new Sprite()
-			sprite.addChild(new Quad(200, 100,0x555555));
+			sprite.addChild(new Image(Assets.getAtlas().getTexture("popup")));
 			sprite.visible = false;
 			
-			tf = new TextField(200, 100, text, "Atari");
-			tf.fontSize = BitmapFont.NATIVE_SIZE;
+			tf = new TextField(170, 100, text, "Atari");
+			tf.x = 17;
 			tf.color = Color.WHITE;
-			tf.autoScale = true;
+			tf.fontSize = 11;
 			sprite.addChild(tf);
 			var ts:CitrusSprite = new CitrusSprite("ts", {x:x-100, y:y-150, group:6, view:sprite});
-			tf.fontSize = 12;
 			_ce.state.add(ts);
 			tf.visible = true;
 		}

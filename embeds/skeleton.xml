@@ -40,7 +40,7 @@
    <b name="hut" parent="head" x="1.15" y="-83.9" kX="-11.63" kY="-11.63" cX="0.4" cY="0.4" pX="51" pY="37" z="12">
     <d name="parts-hut" pX="0" pY="0"/>
    </b>
-   <b name="frontUpArm" parent="upBody" x="-1.1" y="-25.25" kX="11.33" kY="11.33" cX="0.4" cY="0.4" pX="14" pY="46" z="13">
+   <b name="frontUpArm" parent="upBody" x="3.8" y="-39.25" kX="11.33" kY="11.33" cX="0.4" cY="0.4" pX="19" pY="9" z="13">
     <d name="parts-frontUpArm" pX="0" pY="0"/>
    </b>
   </armature>
@@ -50,21 +50,21 @@
    </b>
    <b name="weapon" x="21.5" y="79.25" kX="0" kY="0" cX="1" cY="1" pX="31" pY="104" z="0">
     <d name="Symbol 3" pX="0" pY="0"/>
-    <d name="flameThrower" pX="0" pY="0"/>
+    <d name="flameThrower" pX="93" pY="108"/>
    </b>
   </armature>
   <armature name="shark">
    <b name="back" parent="middle" x="82.35" y="2.7" kX="0" kY="-31.81" cX="1" cY="1" pX="-17" pY="-8" z="0">
-    <d name="back" pX="72" pY="86"/>
+    <d name="back" pX="37" pY="52"/>
    </b>
    <b name="middle" parent="front" x="34.85" y="12.9" kX="0" kY="-9.01" cX="1" cY="1" pX="-15" pY="0" z="1">
-    <d name="middle" pX="78" pY="62"/>
+    <d name="middle" pX="44" pY="26"/>
    </b>
    <b name="front" x="0.5" y="4.6" kX="0" kY="1" cX="1" cY="1" pX="43" pY="14" z="2">
-    <d name="front" pX="126" pY="78"/>
+    <d name="front" pX="95" pY="46"/>
    </b>
    <b name="fin" x="-23.15" y="20.1" kX="11.02" kY="0" cX="1" cY="1" pX="1" pY="-10" z="3">
-    <d name="fin" pX="47" pY="48"/>
+    <d name="fin" pX="13" pY="13"/>
    </b>
   </armature>
   <armature name="RoundFish">
@@ -96,7 +96,7 @@
    </mov>
    <mov name="flameThrower" dr="1" to="0">
     <b name="weapon" sc="1" dl="0">
-     <f x="-10.4" y="99.35" kX="85.46" kY="85.46" cX="0.33" cY="0.33" pX="246" pY="208" z="0" dI="1" dr="1"/>
+     <f x="-61.3" y="159.85" kX="85.5" kY="85.5" cX="0.4" cY="0.4" pX="246" pY="208" z="0" dI="1" dr="1"/>
     </b>
     <b name="arm" sc="1" dl="0">
      <f x="22" y="80" kX="0" kY="0" cX="1" cY="1" pX="22" pY="79" z="1" dI="0" dr="1"/>
@@ -158,7 +158,7 @@
      <f x="-2.5" y="-85.6" kX="-15" kY="-15" cX="0.4" cY="0.4" pX="51" pY="37" z="12" dI="0" dr="1"/>
     </b>
     <b name="frontUpArm" sc="1" dl="0">
-     <f x="-1.1" y="-25.25" kX="11.33" kY="11.33" cX="0.4" cY="0.4" pX="14" pY="46" z="13" dI="0" dr="1"/>
+     <f x="3.8" y="-39.25" kX="11.33" kY="11.33" cX="0.4" cY="0.4" pX="19" pY="9" z="13" dI="0" dr="1"/>
      <f x="0.95" y="-26.85" kX="0" kY="0" cX="0.4" cY="0.4" pX="14" pY="45" z="13" dI="0" dr="1"/>
     </b>
    </mov>
